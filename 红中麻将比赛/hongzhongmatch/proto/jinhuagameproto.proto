@@ -1,0 +1,71 @@
+package proto.game.jhmahjonggame;
+//金华麻将场景信息
+message jhgamescene
+{  
+    optional int32 roomType = 1;        //(暂时无用)
+	optional int32 CurJoker = 2;        //当前癞子
+	optional int32 basescore = 3;       //基础底分
+	optional int32 OpType2 = 4;         //二级操作类型
+}
+//选择飘的数
+message ReqChoosePiao
+{
+	optional int32 PiaoNum = 1;			//飘的大小，0表示不飘
+}
+//游戏开始
+message AckGameStart
+{
+	required int32 bankerid = 1; 		//庄家椅子id
+	optional int32 basescore = 2;       //当前基础底分
+}
+//开始选择飘
+message AckStartPiao
+{
+	repeated int32 piaoNum = 1;			//飘的倍数
+}
+
+//广播玩家选择的飘
+message AckBroadPiao
+{
+	optional int32 chariid = 1;			//椅子id
+	optional int32 UserPiao = 2;		//椅子id对应玩家选择的飘的倍数
+}
+message Fan
+{
+    optional int32 FanType = 1;                //番数类型
+	optional int32 FanNum = 2;                 //番数
+}
+//番数信息
+message FanInfo
+{   
+    optional int32 chairID = 1;            //椅子ID  
+	optional int32 remainBanker = 2;      //连庄分数(0表示无连庄)
+	optional int32 CurBaseScore = 3;
+	optional int32 EndType = 4;            //0表示无，1表示自摸，2表示点炮胡，3表示放炮,4 被自摸
+	optional int32 SpecialType = 5;        //详细结算胡牌类型 1表示自摸，2表示点炮胡，3表示放炮,4 被自摸 
+    repeated Fan  DetalFan = 6;            //番数详细信息
+}
+//陕西麻将结算信息
+message jhmjGameEndInfo
+{   
+	repeated FanInfo    faninfo = 1;       //番数信息
+	repeated int32      HuScore  = 2;      //个玩家胡牌输赢分数（不是总分数 ）
+}
+
+//统计信息
+message ReordInfo
+{
+    optional int32 paohu_num = 1;          //炮胡次数
+	optional int32 zimo_num = 2;           //自摸次数
+	optional int32 dianpao_num = 3;        //点炮次数
+	optional int32 zhuang_num = 4;         //连庄次数
+	optional int32 totalscore = 5;         //总分
+}
+//总结算统计信息
+message GameEndRecord
+{
+    repeated ReordInfo  UserRecoreInfo = 1;      //统计信息
+	optional int32 DataTime = 2;                    //当前时间
+}
+
+

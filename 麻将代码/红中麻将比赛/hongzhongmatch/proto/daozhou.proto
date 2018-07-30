@@ -1,0 +1,21 @@
+package proto.game.daozhou;
+
+message DaoZhouGameEnd
+{
+	repeated int32 hufen = 1;			//胡牌分
+	repeated int32 genzhuang = 2;		//跟庄分    
+	repeated int32 gangfen = 3;			//杠分
+	repeated int32 huangzhuangfen = 4;  //黄庄分  
+	repeated int32 zuopiaofen = 5;		//坐飘分
+	repeated int32 waipiaofen = 6;		//外飘分
+}
+
+
+
+
+
+
+
+
+
+

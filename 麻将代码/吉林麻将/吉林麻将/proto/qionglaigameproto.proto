@@ -1,0 +1,177 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+
+
+package proto.game.qionglaimj;
+
+
+//结算，胡牌、杠牌信息宏定义
+enum HUGANG
+{
+	HUGANG_ZHIGANG = 2;				//直杠
+	HUGANG_WANGANG = 4;				//弯杠
+	HUGANG_ANGANG = 8;				//暗杠
+	HUGANG_DIANPAO = 16;			//点炮
+	HUGANG_PAOHU = 32;				//炮胡
+	HUGANG_DIANGANG = 64;			//点杠
+	HUGANG_BEIZIMO = 128;			//被自摸
+	HUGANG_ZIMO = 256;				//自摸
+}
+
+//听牌类型
+enum LISTEN_TYPE
+{
+	LISTEN_CARD_NOMAL = 0;					//常规听牌处理
+	LISTEN_CARD_BAOTING = 1;				//报听
+	LISTEN_CARD_BAIPAI	= 2;				//摆牌
+	LISTEN_CARD_FIRST_BAOPAI = 3;			//首张报牌
+}
+
+//统计信息
+message ReordInfo
+{
+    optional int32 banker_num = 1;       		//坐庄次数
+	optional int32 hu_num = 2;         			//胡牌次数
+	optional int32 piaolaizi_num = 3;        	//飘癞子次数
+	optional int32 outtime_num = 4;         	//超时次数
+	optional int32 totalscore = 5;         		//总分
+	optional int32 WinCounts = 6;				//赢次数
+	optional int32 GangTimes = 7;				//杠次数
+	optional int32 DianGangTimes = 8;			//点杠次数
+}
+
+//总结算统计信息
+message GameEndRecord
+{
+    repeated ReordInfo  UserRecoreInfo = 1;      //统计信息
+	repeated int32  MostDianPaoUser = 2;         //炮手
+	repeated int32  MostWinScoreUser = 3;        //大赢家玩家 
+	optional int32  DataTime = 4;                //当前时间
+}
+
+
+//广播玩家选择的听牌类型（打出牌后再广播）
+message AckBroadListentype
+{
+	optional int32 chariid = 1;					//选择听牌的椅子id
+	optional int32 ListenType = 2;				//椅子id对应玩家选择的听牌类型
+	repeated int32 ChangeableCards = 3;			//玩家手牌
+}
+
+
+// 番信息
+message tagHuinfo
+{
+	optional int32 FanType    = 1;   //番类型
+	optional int32 FanNum     = 2;   //番数
+}
+
+
+//玩家胡牌信息
+message tagUserHuInfo
+{
+	optional int32 HuTotalscore = 1;  //胡牌输赢总分
+	repeated tagHuinfo stHuinfo = 2;  //胡牌信息
+	optional int32 stHupai      = 3;  //胡牌顺序
+	optional int32 stHuType     = 4;  //胡牌类型
+	optional int32 stHuFan      = 5;  //胡牌番数
+	optional int32 stDianPaoSitid = 6; //点炮椅子
+	optional int32 stDianPaoFan = 7;   //点炮番数
+	optional int32 Sitid        = 8;  //玩家位置
+	repeated int32 ZhuaBaoInfo  = 9;  //抓爆信息
+}
+
+message tagDianPaoInfo
+{
+	repeated int32   stCard       = 2;    //点炮
+}
+
+message tagGangReturn
+{
+    optional int32 Sitid             = 1;     //大叫玩家位置
+	optional int32 stReturnGangscore = 2;	  //退杠分
+}
+
+message tagGangScore
+{
+    optional int32 Sitid             = 1;     //大叫玩家位置
+	optional int32 GangScore         = 2;	  //退杠分
+}
+
+message tagDajiaoReturn
+{
+    optional int32 Sitid             = 1;     //大叫玩家位置
+	optional int32 stDajiaoscore     = 2;	  //大叫输赢分
+}
+
+//断勾卡麻将结算显示内容
+message tagQiongLaiGameEnd
+{
+	repeated tagUserHuInfo   stUserHu           = 1;  //3个玩家胡牌信息（数组下表为椅子id，下面字段同理）
+	repeated tagDianPaoInfo  stDianPaoInfo      = 2;  //3个玩家杠牌信息
+	repeated tagDajiaoReturn stDajiaoReturnGang = 3;  //3个玩家查大叫信息
+	repeated tagGangReturn   stReturnGang       = 4;  //3个玩家查退杠信息
+	repeated tagGangScore    stGangScore        = 5;  //3个玩家查退杠信息
+};
+
+//听牌操作信息
+message tagOpListenInfo
+{
+	optional int32 isHaveOpListen = 1;		//是否选择听牌操作
+	optional int32 ChairID = 2;				//已经操作听牌的椅子id
+	repeated int32 ChangeableCards = 3;		//玩家手牌
+}
+
+
+//选项信息
+message AckChooseInfo
+{
+	optional int32 ZiMoJiaFanJiaDi = 1;		//自摸加番加底
+	optional int32 FengDingBeiShu  = 2;		//封顶倍数
+	optional int32 HaiDiPaoJiaFan  = 3;		//海底炮加番
+	optional int32 HaiDiHuaJiaFan  = 4;		//海底花加番
+}
+
+//定制麻将配置信息
+message AckCustomiedInfo
+{
+	optional int32 gametype = 1;			//0表示断勾卡
+	optional int32 isYipaodouxiang = 2;		//是否可以一炮多响，0表示不可以，非0表示可以
+	optional int32 isQiangganghu = 3;		//是否可以抢杠胡，0表示不可以，非0表示可以
+	optional int32 isChangeCard = 4;		//是否可以换牌，0表示不可以，非0表示可以
+	optional int32 isCheckhuazhudajiao = 5;	//流局是否查花猪大叫，0表示不查，非0表示查
+	optional int32 isHavePiao = 6;			//是否有飘
+	optional int32 piaoTime = 7;			//选择飘的时间
+	repeated int32 UserPiao = 8;			//各个玩家选择的飘
+	optional int32 IsPiaoyet = 9;			//是否已经选择飘
+	optional int32 RoomType = 10;	 		//房间类型，0表示普通房间，1表示三人两色房间
+	optional int32 ListenType = 11;			//听牌类型，0表示常规听牌，1表示报叫，2表示躺牌，3表示首张报牌(参考枚举LISTEN_TYPE)
+	repeated tagOpListenInfo stOpListen = 12;//选择听牌操作的信息（断线重连恢复躺牌、报听的效果）	
+	repeated AckQingInfo stQingHuInfo   = 13;//请胡信息	
+	optional AckChooseInfo stChooseInfo = 14;//房间配置信息
+	optional int32 OpType2              = 15;//
+	optional AckShowHuCard stHuCardShow = 16;//自摸胡牌显示
+	repeated int32 LackOpeOk = 17;// 每个人定缺是否完成
+	repeated int32 LackType = 18;// 每个人定缺的状态 
+}
+
+
+//请胡信息
+message AckShowHuCard
+{
+	optional int32   sitid = 1;
+	optional int32	 HuCard	=2;			    //胡牌（断勾卡血战）
+}
+
+//请胡信息
+message AckQingInfo
+{
+  optional int32 sitid = 1;
+  optional int32 type = 2; //1自摸，2炮胡， 3请胡，4报胡,5报请胡，6请胡成功
+}
+
+
+
+
+

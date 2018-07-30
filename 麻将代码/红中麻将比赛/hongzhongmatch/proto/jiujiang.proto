@@ -1,0 +1,42 @@
+
+
+package proto.game.jiujiangmj;
+
+
+
+message JiuJiangJiaMai   //s -> c
+{
+	repeated int32 jia    = 1;		//1：加买   0：不加买	  -1	
+}
+
+
+message JiuJiangJiaMaiAck   //c -> s
+{
+	required int32 jia    = 1;		//1：加买   0：不加买		
+}
+
+
+message JiuJiangGameSence
+{
+	repeated int32 jia    = 1;		//1：加买   0：不加买		-1 
+}
+
+
+message JiuJiangGameEnd
+{
+	repeated int32 facai_score = 1;			//发财分
+	repeated int32 hongzhong_score = 2;		//红中分
+	repeated int32 gang_score = 3;			//杠分
+	repeated int32 jiamai_score = 4;		//加买分
+	repeated int32 baoting_score = 5;		//报听分
+}
+
+
+
+
+
+
+
+
+
+

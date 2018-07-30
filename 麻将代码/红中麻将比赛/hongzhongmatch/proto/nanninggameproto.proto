@@ -1,0 +1,28 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+
+
+package proto.game.nanningmj;
+
+//三笔封胡
+message AckSanBiFengHu
+{
+	optional int32 sanbi_chairid = 1;				//三笔座位
+	optional int32 peng_sanbi_chairid = 2;			//碰三笔座位
+}
+
+
+//南宁麻将场景信息
+message nngamescene
+{
+	repeated int32 san_bi_feng_hu = 1;			 //是否三比封胡，0:不是，1:是
+}
+
+//南宁麻将场景信息
+message tagNanNingGameEnd
+{
+	repeated int32 san_bi_feng_hu = 1;			 //是否三比封胡，0:不是，1:是
+}
+
+

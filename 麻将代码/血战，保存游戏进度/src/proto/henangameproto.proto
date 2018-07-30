@@ -1,0 +1,24 @@
+package  proto.game.henanmj;
+
+//麻将结算显示内容
+message tagGameEnd
+{
+	repeated FanInfo    faninfo = 1;       //番数信息
+	repeated int32      piaoNum = 2;
+}
+
+//另加番信息
+message AddFanInfo
+{
+    optional int32 AddType = 1;          //另加分类型(1只吃 2门清 3有眼 4箭牌刻 5 翻花对位 6风牌刻)
+	optional int32 AddNum = 2;           //分数
+}
+
+//番数信息
+message FanInfo
+{   
+    required int32 chairID = 1;				//椅子ID  	
+	required int32 SpecialType = 2;			//详细结算胡牌类型 1表示自摸，2表示点炮胡，3表示放炮,4 被自摸 	
+	required int32 FanNum = 3;				//番数	
+	repeated AddFanInfo addfan = 4;   	    //另加番信息， 5天和 6地和 7抢杠胡 8杠上开花 9花上添花		
+}

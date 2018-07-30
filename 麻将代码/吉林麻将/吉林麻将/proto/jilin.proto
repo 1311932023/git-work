@@ -1,0 +1,127 @@
+package proto.game.jilin;
+
+// 一个杠中  牌。和补的次数。
+
+message  gangcard
+{
+    repeated  int32   card         = 1 ;
+	repeated  int32   bu_count     = 2 ;
+}
+
+// 一个 特殊杠的信息。 
+
+message  Speganginfo
+{
+    optional    int32        gang_type  =  1;          // 1 gang   2 bu   
+    repeated    gangcard    gang_card_list =   2 ;
+	optional    int32        gang_id   =   3 ;  
+
+}
+
+message  SpeAllGangInfo
+{
+     repeated   Speganginfo  gang_list = 1 ;
+}
+
+
+message  GangOpInfo
+{
+	optional   int32    optype    = 1 ;
+	optional   int32    chairid     = 2 ;
+	repeated   Speganginfo  gang_list =  3 ; 
+}
+
+
+message  JilinOperateReq
+{
+	optional     int32     type       = 1 ;
+	repeated     int32   card_list = 2 ;
+	optional     int32    gang_id   = 3 ;
+}
+
+
+message  JilinOperateRes
+{
+	optional   int32      res   =1  ;
+	repeated   gangcard  card_list = 2 ; 
+	optional   int32      gang_id    = 3 ; 
+	optional   int32      optype =     4 ;
+	optional   int32        chairid  =  5 ;
+	optional   int32        bucard  = 6 ;
+
+} 
+
+
+
+message BaoPaiMsg 
+{
+   optional   int32   card = 1 ; 
+   optional    int32  new_card = 2 ;
+   optional    int32  type =  3 ;   //  1  : da  2 .huan .   
+
+}
+message   NotifyQiangDanMsg 
+{
+	optional    int32    qiang_gang_chairid =1 ;
+	optional    int32    bei_qiang_chairid = 2 ;
+	optional    int32    card = 3 ;
+}
+
+
+message  RecAllSpeGangInfo
+{
+	
+	optional   int32             chairid =1 ; 
+	repeated   Speganginfo       gang_list =   2  ;     // 这个是已经杠的信息， 
+}
+
+
+message   JilinReconnectInfo
+{
+	repeated    RecAllSpeGangInfo   gang_list =   1 ;     // 这个是已经杠的信息， 
+
+	optional   SpeAllGangInfo      gang_info =  2 ;  ///  刚好是自己摸牌， 有特殊杠的信息， 
+
+	optional   int32               bao_card = 3 ;  
+
+	optional   int32                bu_card  =  4 ; 
+	optional   int32                bu_chairid  =  5 ;
+
+	repeated   zhongfabaiinfo       chi_list  =   6 ;
+
+}
+
+
+message   feninfo
+{
+	optional  int32   chairid = 1  ;
+	optional   int32  hu_paifen = 2 ;
+	optional   int32  gang_fen = 3 ;
+}
+
+message   zhongfabaiinfo
+{
+	optional   int32    chairid =  1 ;
+	repeated    int32    card    =    2 ;
+}
+
+
+message   JilinGameEnd
+{
+	optional int32  bao_card = 1 ; 
+
+	repeated    RecAllSpeGangInfo   gang_list =    2 ;     // 这个是已经杠的信息，  
+
+	repeated   feninfo      fen_list  =  3 ; 
+
+	repeated   zhongfabaiinfo     chi_list  = 4 ; 
+
+	
+}
+
+
+message   jilinbuganginfo
+{
+	optional  int32   chairid = 1 ;
+	optional  int32   card    = 2 ;   
+}

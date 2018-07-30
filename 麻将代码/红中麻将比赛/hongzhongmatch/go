@@ -1,0 +1,17 @@
+#!/bin/bash
+
+p="match"
+
+echo $p
+ps aux | grep $p | grep -v grep | awk '{ print $2 }' | xargs kill -9
+
+sleep 1
+./mjcommon -D -f conf/match.common.conf 
+sleep 1
+
+./mjcommon -D -f conf/match.peroid.conf
+
+sleep 1
+./mjcommon -D -f conf/match.qualified.conf
+
+ps  -ef|grep -v grep   | grep   mjcommon 

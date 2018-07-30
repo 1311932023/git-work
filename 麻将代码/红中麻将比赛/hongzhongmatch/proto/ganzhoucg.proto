@@ -1,0 +1,58 @@
+
+
+
+package proto.game.ganzhoucg;
+
+
+message PlayerJinInfo
+{
+	repeated int32 jin_card = 1;	// 正精  副精
+	required int32 jinba = 2;		//精霸charid    -1： 没有人精霸
+	repeated int32 chongguan = 3;	//1：冲关  0：失败
+	repeated int32 pos_sum = 4;		//正精数量
+	repeated int32 ass_sum = 5;		//副精数量
+	repeated string score = 6;		
+}
+
+
+
+
+
+//游戏结算
+message GanZhoucgGameend
+{
+	repeated int32 jingpaifen = 1 ;		//金牌分
+	repeated int32 shangjinfen = 2;		//上精分
+	repeated int32 xiajinfen = 3;		//下精分
+	repeated int32 zuojinfen = 4;		//左精分
+	repeated int32 youjinfen = 5;		//右精分
+	repeated int32 hupaifen = 6;		//胡牌分
+	repeated int32 jianglifen = 7 ;		//奖励分
+	repeated int32 minggang = 8 ;		//明杠
+	repeated int32 angang = 9 ;		//暗杠
+	repeated int32 gangjing = 10;		//杠精
+	repeated int32 chaozhuang = 11;		//抄庄
+	repeated int32 shangxiajin = 12;	//上下精
+	repeated int32 zuoyoujin = 13;		//左右精
+	repeated PlayerJinInfo jininfo = 14;  //上下左右左左右右 依次填充
+	repeated int32 zuozuojingfen = 15;		//左左精分
+	repeated int32 youyoujingfen = 16 ;		//右右精分
+	repeated int32 piaozhengjin = 17;			//飘精分
+	repeated int32 piaofujin = 18;			//飘精分
+	repeated int32 zuozuoyouyou = 19;		//左左右右牌
+	//repeated int32 jingba = 15 ;			//精霸  1：精霸   0：不用显示精霸
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,107 @@
+package proto.game.fuzhoumahjonggame;
+
+//发牌之后翻花牌
+message FZ_AckBeginFanHuaPai
+{
+	required int32 Charid = 1;		//玩家charid
+	required int32 HuaSum = 2 ; 	//当前花牌替换为新牌之后，花牌数量
+	repeated int32 HuaCard = 3;		//花牌
+	repeated int32 NewCard = 4;		//新牌
+	optional int32 left_card_sum = 5; //换金牌之后，剩余牌数量
+}
+
+//开金是花牌
+message FZ_AckQiangJinHua
+{
+	required int32 Charid = 1 ;		//庄家charid
+	required int32 HuaSum = 2 ;		//花牌数量
+	required int32 HuaCard = 3;		//花牌
+	optional int32 left_card_sum = 4; //换金牌之后，剩余牌数量
+}
+
+//摸牌是花牌,继续摸牌
+message FZ_AckGetCardJin
+{
+	required int32 charid = 1;      //charid
+	required int32 HuaSum = 2;
+	required int32 HuaCard = 3;	
+	optional int32 left_card_sum = 4; //换金牌之后，剩余牌数量
+	optional int32 get_type = 5;//0: 从前面摸到花牌 1：从后面摸到花牌
+}
+
+
+//结算
+enum FZ_HU_TYPE
+{
+	TYPE_FZ_QUANQING = 1;					//全清
+	TYPE_FZ_JINLONG	= 2;					//金龙
+	TYPE_FZ_BANQING	= 3;					//半青
+	TYPE_FZ_JINQUE	= 4;					//金雀
+	TYPE_FZ_3JINDAO	= 5;					//三金倒
+	TYPE_FZ_JINKAN	= 6;					//金坎
+	TYPE_FZ_TIANHU	= 7;					//天胡
+	TYPE_FZ_QIANGJIN= 8;					//抢金
+	TYPE_FZ_WUHUAWUGANG	= 9;				//无花无杠
+	TYPE_FZ_YIZHNGHUA	= 10;				//一张花
+
+	TYPE_FZ_YOUJIN = 11;					//游金
+	TYPE_FZ_SHAUNGYOU = 12;					//双游
+	TYPE_FZ_SANYOU = 13;					//三游
+	TYPE_FZ_DIHU = 14 ;						//地胡
+	TYPE_FZ_4JINDAO = 15;					//4金倒
+	TYPE_FZ_JINGANG = 16;					//金杠
+	TYPE_FZ_DANDIAO = 17;					//单调
+	TYPE_FZ_GAIBAO_QIANGJIN = 18;			//盖宝抢金
+	TYPE_FZ_5JINDAO = 19;					//5金倒
+	TYPE_FZ_6JINDAO = 20;					//6金倒
+	TYPE_FZ_SHUANGJINZUOTOU = 21;			//双金做头 (天胡特有的)
+
+
+
+	TYPE_FZ_QIANGGANGHU = 100;				//抢杠胡
+	TYPE_FZ_7DUI = 101;						//7对
+	TYPE_FZ_13YAO = 102;					//13幺
+	TYPE_FZ_PINGHU = 103;					//平胡
+	TYPE_FZ_GANGSHANGHU = 104;				//杠上花
+	TYPE_FZ_SHUFEN = 105;					//胡牌分
+
+	TYPE_FZ_MAX = 200;						//max
+}
+
+message FZ_HuaCard
+{
+	required int32	card = 1;		//花牌
+	required int32  card_num = 2 ;	//花牌数量
+}
+
+//汕尾增加
+message PlayerHuaCards
+{
+    repeated int32 cards = 1;
+}
+
+message FZ_GameEnd
+{
+	required int32 Charid = 1;		//椅子id     //0,1,2,3
+	required int32 HuaSum = 2;		//花牌数量
+	required int32 JinSum = 3;		//金数量
+	required int32 LianZhuangShu=4; //连庄数
+	required int32 gangsum=5;		//杠分数
+	repeated FZ_HuaCard HuaCard=6;	//花牌发送
+    optional int32 HuaPaiFanSum = 7; //花牌番数
+	optional int32 FengTouFanSum = 8; //风头番数
+	repeated PlayerHuaCards playerCards = 9;
+	//胡牌信息在game.tagGameEndInfo 里面复用
+}
+
+message FZ_GameSence
+{
+	repeated int32 HuaPaiNum = 1; //花牌数量
+	optional int32	 fz_type	=2;			//福州胡牌  抢金类型 0:非抢金  1：抢金
+	repeated PlayerHuaCards playerCards = 3;
+}
+
+//鬼牌  湖南麻将结构体里面  AckEnSureJoker
+//OpenCard：实际值
+//CurJokerCard：实际值
+//JokerType：2

@@ -1,0 +1,70 @@
+
+package proto.game.xianningmj;
+
+// 牌局赖子信息
+message GameLaiziInfo
+{
+	repeated int32 laiziShow = 1;	//亮牌赖子
+	repeated int32 laiziSign = 2;	//角标赖子
+	repeated int32 diceList = 3;	//骰子列表
+	optional bool flag = 4;   		// true:游戏开始首次发送标记；
+}
+
+/*红中赖子杠个数*/
+message tagHongZhongLaiZiGang
+{
+	optional int32 hongzhonggang = 1;	//红中杠
+	optional int32 laizegang = 2;		//赖子杠
+}
+  
+message GameEndXianNing
+{
+	repeated tagHongZhongLaiZiGang hongzhonglaizigang = 1;  //红中赖子杠信息
+	repeated GameEndPlayerScoresInfo playerScoreInfoList = 2; // 玩家分数信息列表
+    optional GameMapaiInfo gameMapaiInfo = 3; //咸宁转转奖马马牌信息
+	optional int32 laiziSign = 4;	//角标赖子
+	repeated int32 remainderCards = 5; //牌池剩余牌
+}
+
+message RspGamePlayerAlertingInfo
+{
+	optional int32 seatid = 1;			// 玩家座位号
+	optional bool flag = 2;			// 报警状态：false关闭；true开启。
+}
+
+message tagGameScene
+{
+	optional GameLaiziInfo laizi_info = 1;  //赖子信息
+	repeated RspGamePlayerAlertingInfo PlayerAlertingInfo = 2;//告警信息
+	repeated  int32 bAnGangTing = 3;//抢暗杠的时候，听得牌的信息。
+}
+
+// 玩家马牌信息
+message PlayerMapaiInfo 
+{
+	optional int32 chairId = 1; // 座位号
+	repeated int32 mapaiList = 2; // 马牌列表
+}
+
+message GameMapaiInfo 
+{
+	repeated int32 publicMapaiList = 1; // 公共鸟牌信息
+	repeated PlayerMapaiInfo playerMapaiInfoList = 2; // 玩家鸟牌信息列表
+}
+
+
+//#结算胡杠分模块
+//每个玩家的分数信息数据结构：
+// 玩家分数信息
+message GameEndPlayerScoresInfo 
+{
+	required int32    chairid 	    = 1;		//椅子ID
+	required int32    gangscore  	= 2;        //杠总分
+	required int32    huscroe       = 3;        //胡牌分
+} 
+
+
+//广播操作结果
+message AckBcOpResultAnGangScore {
+	repeated int32    Score		 = 1;		//杠牌引起分数
+}

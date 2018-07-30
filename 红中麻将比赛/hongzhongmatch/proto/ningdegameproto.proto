@@ -1,0 +1,17 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+
+
+package proto.game.ningdemj;
+
+//连续荒庄、跟庄次数
+message NingeGameEnd
+{
+	repeated int32 jinshu = 1;			//金数
+	repeated int32 gangTimes = 2;			//杠数量
+	
+
+}
+
+

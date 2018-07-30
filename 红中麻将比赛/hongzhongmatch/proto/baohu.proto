@@ -1,0 +1,34 @@
+package proto.game.baohu;
+
+
+
+//结算显示，杠牌信息
+message GangScore
+{
+	required int32 GangType = 1;		//0表示无，64表示点杠,2表示直杠，4表示弯杠，8表示暗杠 16被直杠 32被弯杠 128被暗杠   
+	repeated int32 GangCard = 2;		//杠的牌
+	required int32 gang_score =3;
+}
+
+message GangInfo
+{
+	repeated GangScore scoreinfo = 1 ;  //依次是 暗杠 、直杠、弯杠   跟张
+}
+
+message BaoHuGameEnd
+{
+	repeated int32 hufen = 1;			//胡牌分
+	repeated GangInfo gangfen = 2;		//杠分    
+	repeated int32 niaofen = 3;			//鸟分
+	repeated int32 lianzhuangfen = 4;   //连庄分  
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+
+
+package proto.game.yuanjiangmj;
+
+
+//沅江麻将场景信息
+message yjgamescene
+{
+	optional int32 OpType2 = 1;			//海底锁定牌 1为锁定， 0 为未锁定
+    repeated int32 BaoTingFlag = 2;	    //操作类型	
+}
+
+

@@ -1,0 +1,21 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+
+
+package proto.game.anqingmj;
+
+//补花
+message AnQingGameEnd
+{
+	repeated int32 BuHuaNum = 1;			//补花数
+	repeated HuaCard huaCards = 2;				//花牌
+	repeated int32 SanFengNum = 3;			//三风
+	repeated int32 GangFen = 4;				//杠分
+}
+
+//花牌
+message HuaCard
+{
+    repeated int32 Card = 1;
+}

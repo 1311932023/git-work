@@ -1,0 +1,37 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+
+
+package proto.game.laibinmj;
+
+//三笔封胡
+message AckSanBi
+{
+	optional int32 sanbi_chairid = 1;				//三笔座位
+	optional int32 sanbi_op_chairid = 2;			//三笔操作座位
+}
+
+//四笔封胡
+message AckFengHu
+{
+	optional int32 sibi_chairid = 1;				//四笔封胡座位
+	optional int32 sibi_op_chairid = 2;				//四笔操作座位
+}
+
+
+//来宾麻将场景信息
+message lbgamescene
+{
+	repeated int32 san_bi = 1;			 //是否三比，0:不是，1:是
+	repeated int32 feng_hu = 2;			 //是否封胡，0:不是，1:是
+}
+
+//来宾麻将场景信息
+message tagLaiBinGameEnd
+{
+	repeated int32 san_bi = 1;			 //是否三比，0:不是，1:是
+	repeated int32 feng_hu = 2;			 //是否封胡，0:不是，1:是
+}
+
+

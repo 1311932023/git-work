@@ -1,0 +1,54 @@
+
+
+
+package proto.game.nanchang;
+
+ //1：上下翻精  2：埋雷    3：照镜子   4：同一首歌
+
+//每个玩家的精牌信息
+message PlayerInfo
+{
+	repeated int32 jingsum = 1;			//每个精牌的数量
+	required int32 jingfen = 2;			//精分
+	required int32 chongguan = 3;		//1 冲关，0：冲关失败
+	required int32 jingba = 4;			//1:精霸  0：没有精霸
+}
+
+//通用动画消息 ，忽视名字。
+message HuiTouXiao
+{
+	repeated int32 jingcard = 1;		//一次正精  副精
+	repeated PlayerInfo info = 2;		//每个人的精牌信息
+	required int32 type =3;
+}
+
+//动画数组
+message Animation
+{
+	repeated HuiTouXiao animation = 1;  
+}
+
+
+message GameEndNanChang
+{
+	repeated int32 hufen = 1;			//胡牌分
+	repeated int32 shangjin = 2;		//上精分
+	repeated int32 mutable_fen = 3;		//不同玩法  的得分
+	repeated int32 gangfen = 4;			//杠分
+	repeated int32 huitou = 5;			//回头笑得分
+	required int32 xiajing = 6;			// 下精
+	required int32 palou = 7 ;			//爬楼
+	optional Animation animation = 8;	//动画  
+	
+}
+
+
+
+
+
+
+
+
+
+
+

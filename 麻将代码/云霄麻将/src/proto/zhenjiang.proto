@@ -1,0 +1,40 @@
+package proto.game.zhenjiang;
+
+
+message DaInfo
+{
+	repeated int32 da_type = 1;      //1:头搭   2：二搭   3：被动搭
+}
+
+message zhenjiangGameSence
+{
+	repeated DaInfo dainfo = 1 ;
+	repeated int32 da_sum = 2;			//搭牌数量
+	required int32 lock_laizi = 3;		//是否需要锁癞子牌  1:需要，0/空：不需要
+}
+
+message zhenjiangGameEnd
+{
+	repeated int32 touda =1 ;			//头搭     个数
+	repeated int32 erda = 2;			//二搭	   个数
+	repeated int32 beidongda = 3;		//被动搭   个数
+	repeated int32 genzhang = 4;		//跟张     分
+	repeated int32 da_fen = 5	;		//搭分     分   
+	repeated int32 gangfen = 6 ;		//gang fen 分
+	repeated int32 hufen = 7;			//胡牌分
+}
+
+
+message zhenjiangGenZhang
+{
+	required int32 charid = 1;		
+}
+
+message zhenjiangDaSum
+{
+	required int32 charid = 1;			//玩家charid
+	required int32 da_sum = 2;			//玩家的搭牌数量
+}
+
+
+

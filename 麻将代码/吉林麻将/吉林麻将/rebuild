@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd common
+make clean && make lib
+cd ..
+
+cd libnormalmahjong
+make clean && make lib
+cd ..
+
+cd proto
+make
+cd ..
+
+make clean && make

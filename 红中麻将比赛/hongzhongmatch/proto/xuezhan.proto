@@ -1,0 +1,33 @@
+package proto.game.xuezhan;
+
+message XueZhanHuanPai
+{
+	repeated int32 cards = 2;			//换的牌
+}
+
+message XueZhanHuanPaiAck
+{
+	repeated int32 my_cards = 1;			//我剔除的牌
+	repeated int32 other_cards = 2;			//别人给我的牌
+}
+
+message XueZhanGameSence
+{
+	required int32 isHuanPai = 1;		//1:换牌阶段  0：不需要换牌
+	required int32 isDingQue = 2;		//1：定缺       0：不需要定缺
+	repeated int32 DingQueCardType = 3;	//-1:没有定缺  0：万 1：条  2：筒
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

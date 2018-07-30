@@ -1,0 +1,99 @@
+package proto.game.hnmahjonggame;
+//三四道牌包牌达成消息
+message BaoPaiReackNotice
+{
+    optional int32 chairID = 1;//椅子ID
+	optional int32 ReachState = 2; //达成状态(1达成3道牌 2达成4道牌)
+	optional int32 ProvideChairID = 3;  //引起玩家ID
+}
+//海南麻将场景信息
+message hngamescene
+{
+	repeated HuaPaiInfo HuaPai = 1;     //花牌信息
+	optional int32 isHavePiao = 2;      //是否有飘
+	optional int32 piaoTime = 3;			//选择飘的时间
+	repeated int32 UserPiao = 4;			//各个玩家选择的飘
+	optional int32 IsPiaoyet = 5;			//是否已经选择飘
+	optional int32 roomType = 6;           //(0四人房 1三人房)
+	repeated int32 piaoNum = 7;			 //飘的倍数
+}
+//选择飘的数
+message ReqChoosePiao
+{
+	optional int32 PiaoNum = 1;			//飘的大小，0表示不飘
+}
+//游戏开始
+message AckGameStart
+{
+	required int32 bankerid = 1; 		//庄家椅子id
+	optional int32 quanfeng  = 2;        //当前圈风
+}
+//开始选择飘
+message AckStartPiao
+{
+	repeated int32 piaoNum = 1;			//飘的倍数
+}
+
+//广播玩家选择的飘
+message AckBroadPiao
+{
+	optional int32 chariid = 1;			//椅子id
+	optional int32 UserPiao = 2;		//椅子id对应玩家选择的飘的倍数
+}
+//花牌信息
+message HuaPaiInfo
+{
+    optional int32 HuaCount = 1;       //花牌长度
+	repeated int32 HuaCard = 2;        //花牌数据
+}
+//另加番信息
+message AddFanInfo
+{
+    optional int32 AddType = 1;          //另加分类型(1只吃 2门清 3有眼 4箭牌刻 5 翻花对位 6风牌刻)
+	optional int32 AddNum = 2;           //分数
+}
+
+//番数信息
+message FanInfo
+{   
+    optional int32 chairID = 1;           //椅子ID  
+	optional int32 remainBanker = 2;      //连庄分数(0表示无连庄)
+	optional int32 EndType = 3;            //0表示无，1表示自摸，2表示点炮胡，3表示放炮,4 被自摸
+	optional int32 SpecialType = 4;        //详细结算胡牌类型 1表示自摸，2表示点炮胡，3表示放炮,4 被自摸 5天和 6地和 7抢杠胡 8杠上开花 9花上添花
+    optional int32 FanType = 5;          //番型
+	optional int32 FanNum = 6;           //番数 
+	repeated AddFanInfo addfan = 7;      //另加番信息
+	optional int32 BaoPaiState = 8;      //包牌类型(0 无 1 三道牌 2 四道牌)
+	optional int32 FirstGangCard = 9;    //首张杠牌数据(0没有首张杠 其他数据为首张杠牌数据)
+	optional int32 flowerBanker = 10;    //根庄(0无 1跟庄 2被跟庄)
+}
+//海南麻将结算信息
+message hnmjGameEndInfo
+{   
+    repeated HuaPaiInfo HuaPai = 1;        //花牌信息
+	repeated FanInfo    faninfo = 2;       //番数信息
+	repeated int32      HuaPaiScore = 3;   //花牌得分
+	repeated int32      HuScore  = 4;      //个玩家胡牌输赢分数（不是总分数 ）
+	repeated int32      piaoNum = 5;				//各个玩家选择的飘
+}
+
+//统计信息
+message ReordInfo
+{
+    optional int32 minggang_num = 1;       //明杠次数
+	optional int32 angang_num = 2;         //暗杠次数
+	optional int32 dianpao_num = 3;        //点炮次数
+	optional int32 jiepao_num = 4;         //接炮次数
+	optional int32 zimo_num = 5;           //自摸次数
+	optional int32 totalscore = 6;         //总分
+}
+//总结算统计信息
+message GameEndRecord
+{
+    repeated ReordInfo  UserRecoreInfo = 1;      //统计信息
+	repeated int32  MostDianPaoUser = 2;              //炮手
+	repeated int32  MostWinScoreUser = 3;             //大赢家玩家 
+	optional int32 DataTime = 4;                    //当前时间
+}
+
+

@@ -1,0 +1,12 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+
+
+package proto.game.anqingmj;
+
+//补花数
+message AnQingGameEnd
+{
+	repeated int32 BuHuaNum = 1;			//补花数
+}

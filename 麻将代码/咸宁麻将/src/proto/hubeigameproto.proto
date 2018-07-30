@@ -1,0 +1,203 @@
+
+
+package proto.game.hubeimj;
+
+
+//断线重连回来，玩家打出的癞子杠红中杠等信息
+message tagSceneGangInfo
+{
+	repeated int32 card = 1;				//癞子杠、红中杠等打出的牌
+}
+
+enum GAME_TYPE
+{
+	GAME_TYPE_YILAIDAODI = 1;				//一赖到底
+	GAME_TYPE_PILAI = 2;					//痞赖
+	GAME_TYPE_LIANGMENPAI = 3;				//两门牌
+	GAME_TYPE_SANMENPAI = 4;				//三门牌
+	GAME_TYPE_KAIKOU_FAN = 1103001;			//开口翻（无癞子皮）
+	GAME_TYPE_KOUKOU_FAN = 1103002;			//口口翻（有癞子皮）
+	GAME_TYPE_LAI_HUANG	 = 1116001;			//晃晃（赖晃）
+	GAME_TYPE_YING_HUANG = 1116002; 		//晃晃（硬晃）
+
+}
+
+//湖北麻将场景信息
+message hubeiGameScene
+{
+	optional int32	gametype = 1;				//游戏玩法，参考GAME_TYPE
+	optional AckLaiziCard	stLaizi	= 2;		//游戏开始需要显示的癞子、癞子皮等信息
+	optional int32	minHuCount = 3;				//起胡点数
+	repeated int32 TotalDianshu = 4;			//各个玩家的总点数
+	repeated tagSceneGangInfo stGang = 5;		//玩家已经打出癞子杠、红中杠等信息
+	optional int32 PlayType_huanghuang = 6;		//赖晃玩法（一赖到底1117001、痞赖1117002）
+	optional int32 ScoreType_huanghuang = 7;	//赖晃结算方式（仙桃晃晃1132001、天门晃晃1132002）
+	optional AckLaiziDouble stLaiziDouble = 8;	//玩家打出的癞子杠倍数
+}
+
+//癞子牌
+message AckLaiziCard
+{
+	optional int32	card = 1;					//生成癞子的牌，该牌加1就等于癞子牌,该牌减1就等于癞子皮牌
+	optional int32  laizicard = 2;				//癞子牌
+	optional int32	laizipicard = 3;			//癞子皮牌
+}
+
+//结算界面杠牌类型
+enum END_INFO
+{
+	KAI_KOU = 1;								//开口
+	HONGZHONGGANG = 2;							//红中杠
+	FACAIGANG = 3;								//发财杠
+	LAIZIGANG = 4;								//癞子杠
+	LAIZIPIGANG = 5;							//癞子皮杠
+	YING_HU = 6;								//硬胡
+	ZIMO = 7;									//自摸
+	FANGPAO = 8;								//放炮
+	XIANJIA = 9;								//闲家
+	ZHUANGJIA = 10;								//庄家
+	ANGANG = 11;								//暗杠
+	MINGGANG = 12;								//明杠
+	BEI_QIANGGANG = 13;							//被抢杠
+	YUANLAI_FAN = 14;							//原赖翻
+	WEI_KAIKOU = 15;							//未开口
+	
+	MAX_TYPE = 16;								//最大类型
+}
+
+enum HUFAN_TYPE
+{
+	//小胡
+	MJ_FAN_TYPE_JIANG_DUI = 0x01;			//将对
+	//大胡
+	MJ_FAN_TYPE_FENG_YI_SE = 0x02;			//风一色
+	MJ_FAN_TYPE_JIANG_YI_SE = 0x04;			//将一色
+	MJ_FAN_TYPE_QING_YI_SE = 0x08;         	//清一色
+	MJ_FAN_TYPE_DUIDUIHU = 0x10;			//碰碰胡
+	MJ_FAN_TYPE_GANGSHANGHUA = 0x20;		//杠上花
+	MJ_FAN_TYPE_HAIDILAO = 0x40;			//海底捞
+	MJ_FAN_TYPE_QIANGGANGHU = 0x80;			//抢杠胡
+}
+
+//结算界面杠牌信息
+message tagUserDianShuInfo
+{
+	optional int32	Type = 1;					//参考END_INFO
+	optional int32	Doublenum = 2;				//倍数
+	optional int32	count = 3;					//次数
+}
+
+message tagEndInfo
+{
+	repeated tagUserDianShuInfo stDianshuInfo = 1;		//玩家结算加倍信息
+}
+
+//胡牌番种信息
+message tagHufanInfo
+{
+	optional int32 isDahu = 1;					//大胡还是小胡，1是大胡，0是小胡
+	optional int32 basecore = 2;				//基础分
+
+}
+
+//晃晃癞子杠信息
+message tagLaizigangInfo
+{
+	optional int32 LaizigangCount = 1;			//癞子杠个数
+	repeated int32 LaizigangIndex = 2;			//每个癞子杠的顺序
+}
+
+//游戏结束的胡牌类型
+enum GAMEEND_HUTYPE
+{
+	HUTYPE_PAOHU = 0;							//炮胡
+	HUTYPE_ZIMO = 1;							//自摸
+	HUTYPE_FANGPAO = 2;							//放炮
+	HUTYPE_NULL = 3;							//非自摸和炮胡
+	HUTYPE_QIANGGANGHU = 4;						//抢杠胡
+	HUTYPE_BEIQIANGGANG = 5;					//被抢杠
+	HUTYPE_YINGHU = 6;							//黑摸、硬胡
+	HUTYPE_RUANMO = 7;							//软摸
+	HUTYPE_GANGSHANGPAO = 8;					//杠上炮、热充
+}
+
+//游戏结算
+message AckhubeiGameEnd
+{
+	repeated int32	score = 1;					//四个玩家的分数
+	repeated tagEndInfo stEndinfo = 2;			//开口、红中杠等结算信息
+	repeated int32  isFengding = 3;				//是否封顶，0表是不封顶，1表示封顶，2表示金顶， 3表示光明顶，4表示阳光顶
+	repeated int32 HuType = 4;					//参考GAMEEND_HUTYPE：0是炮胡，1是自摸，2表示放炮，3表示非自摸、炮胡，4抢杠胡，5被抢杠，6是黑摸(硬胡),7是软摸(6、7是晃晃麻将的自摸分类),8是杠上炮胡
+	repeated tagHufanInfo stHuFan = 5;			//大胡小胡等胡牌信息（数组下标为椅子id）
+	optional int32 bHuCard = 6;					//胡的那张牌
+	optional int32 HuFanType = 7;				//胡牌番种,和HUFAN_TYPE里面类型进行按位与操作，为真就是有相对应的胡牌番种
+	repeated int32 isChengbao = 8;				//是否承包，0表示未承包，1表示承包，2表示反承包（数组下标为椅子id）
+	repeated int32 Basescore = 9;				//结算输分玩家的基数底分，赢的那家为0（数组下标为椅子id）
+	repeated int32 Huscore_Huanghuang = 10;		//晃晃胡牌分数
+	repeated int32 Gangscore_Huanghuang = 11;	//晃晃杠牌分数
+	repeated int32 PiaoLaiziScore_Huanghuang=12;//晃晃飘癞子分数
+	repeated tagLaizigangInfo stLaizigang=13;	//每个玩家癞子杠的顺序
+}
+
+//翻出癞子皮牌（广播）
+message AckBroadcastLaizipi
+{
+	optional int32 LaizipiCard = 1;				//癞子皮牌
+	optional int32 LeftCardNum = 2; 			//牌池剩余牌数
+}
+
+//统计信息
+message ReordInfo
+{
+    optional int32 banker_num = 1;       		//坐庄次数
+	optional int32 hu_num = 2;         			//胡牌次数
+	optional int32 piaolaizi_num = 3;        	//飘癞子次数
+	optional int32 outtime_num = 4;         	//超时次数
+	optional int32 totalscore = 5;         		//总分
+}
+
+//总结算统计信息
+message GameEndRecord
+{
+    repeated ReordInfo  UserRecoreInfo = 1;      //统计信息
+	repeated int32  MostDianPaoUser = 2;         //炮手
+	repeated int32  MostWinScoreUser = 3;        //大赢家玩家 
+	optional int32 DataTime = 4;                 //当前时间
+}
+
+//湖北晃晃麻将，自摸胡时下发该协议
+message AckZimoHu_Huanghuang
+{
+	optional int32    ChairID 	 = 1;			//胡牌的椅子id	
+    optional int32    OpType     = 2;	    	//是软胡还是硬胡，0表示软胡，1表示硬胡	
+}
+
+//晃晃天门麻将，下发癞子杠的倍数
+message AckLaiziDouble
+{
+	repeated tagTypeDouble stLaizigang = 1;		//各个玩家的癞子杠倍数
+}
+
+//各种杠类型的次数和倍数结构体
+message tagTypeDouble
+{
+	optional int32	Type = 1;					//参考END_INFO
+	optional int32	count = 2;					//总次数	
+	optional int32	Doublenum = 3;				//总倍数
+}
+
+//四张牌的信息
+message tagFourCardInfo
+{
+	optional int32 ChairID = 1;					//摸到的椅子id
+	optional int32 Card = 2;					//摸到的牌
+}
+
+//下发最后四张牌
+message AckLastFourCard
+{
+	repeated tagFourCardInfo stLastFourCard = 1;			//最后四张牌
+}
+
+
+

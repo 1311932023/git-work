@@ -1,0 +1,103 @@
+package proto.game;
+
+//请求登陆 1001
+message ReqLogin
+{
+	required int32 uid  = 1;
+	optional int32 mid  = 2;
+}
+
+//玩家退出房间4004
+message AckLogoutBc
+{
+	required int32 seatid = 1; 		//桌子id
+	optional int32 uid = 2;
+	optional int32 type = 3;	//
+}
+
+//发奖 5118
+message MatchPrizeAck
+{
+	optional string content = 1;
+	optional int32 	isBreak = 2;
+}
+
+//请求排行版 1230
+message MatchRankReq
+{
+	optional int32 	page 	= 1;
+}
+
+//排行榜返回 5115
+message MatchRankAck
+{
+	optional int32 		page 		= 1;
+	repeated RankInfo 	ranklist 	= 2;
+}
+//排行榜结构体
+message RankInfo
+{
+	optional int32 		rank 			= 1;//排名
+	optional string 	name 			= 2;//昵称
+	optional float 		totalMpScore 	= 3;//总mp分
+	optional float 		totalUseTime 	= 4;//总用时
+	optional string avatar = 5;
+	optional int32 uid = 6;
+}
+
+//刷新个人排名 5112
+message UpdateRank
+{
+	optional int32 		rank 	= 1;//排名
+}
+
+//对局详情返回 4003
+message DetailAck
+{
+	repeated DetailInfo rankInfo = 1;
+	optional int32 curRank = 2;
+	optional int32 totalRank = 3;
+}
+
+//对局详情结构体
+message DetailInfo
+{
+	optional int32 		round 		= 1;//第x局
+	optional int32 		score 		= 2;//当局得分
+	optional int32 		roundRank 	= 3;//当局局排行
+	optional int32 		totalRank 	= 4;//当局总排行
+	optional int32 		maxScore 	= 5;//极限得分 跑胡子？？？
+	optional string 	bestName 	= 6;//最佳昵称
+	optional int32 		bestScore 	= 7;//最佳得分
+	optional int32 totalScore = 8;
+	optional int32 	curturn = 9; //当前轮
+}
+
+
+//轮次结束 5114
+message MatchTurnOver
+{
+	optional int32 			left_table 	= 1;
+	optional int32 			cur_rank 	= 2;
+	optional NextTurnInfo 	cur_turn 	= 3;
+	optional NextTurnInfo 	next_turn 	= 4;
+	optional int32 			promotion 	= 5;
+	optional int32 			left_time 	= 6;
+	optional int32          score       = 7;
+}
+//轮次信息
+message NextTurnInfo
+{
+	optional int32 			turnid 			= 1;
+	optional int32 			join_num 		= 2;
+	optional int32 			promotion_num 	= 3;
+}
+
+//托管
+message AckRobotBc
+{
+	optional int32 uid 		= 1;
+	optional int32 seatid 	= 2;
+	optional int32 robot 	= 3;
+}
+

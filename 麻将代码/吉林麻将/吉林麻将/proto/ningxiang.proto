@@ -1,0 +1,47 @@
+package proto.game.ningxiang ;  
+
+message gamestartmsg
+{
+   optional  int32   shai_one  = 1 ;
+   optional  int32   shai_two  = 2 ;
+   optional  int32   zheng_wang  = 3 ;
+   repeated  int32   chun_wang  = 4 ;
+
+}
+
+
+message  outkingmsg 
+{
+    optional  int32  chairid  = 1 ;
+	optional  int32  card     =  2 ; 
+
+}  
+
+message fengdongreq 
+{
+   optional  int32  chairid  = 1 ;  
+
+}
+message fengdongack
+{
+    optional  int32  chairid  = 1 ;   
+	optional  int32  result       =  2 ;
+}
+
+message feng_dong
+{
+  optional   int32   chairid = 1 ;
+  optional   int32   feng    = 2 ;
+}
+
+
+
+message  reconnect_info
+{
+     optional  int32   zhengwang  = 1 ;
+	 repeated  int32   chun_wang  = 2 ;
+	 repeated  feng_dong  feng_list =  3 ;
+	 optional  int32   out_king  =  4 ;
+
+
+}

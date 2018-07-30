@@ -1,0 +1,35 @@
+package proto.game.nanpingmahjonggame;
+
+
+message Info
+{
+	repeated int32 card = 2 ;			//金中杠的牌
+	repeated int32 card_num = 3;		//每一种牌的数量
+}
+
+
+//每个玩家金中杠的信息
+message JinZhongGangInfo
+{
+	required int32 sum = 1 ;			//金中杠得分
+	repeated Info info = 2 ;			//金 中 杠
+}
+
+//所有玩家金中杠信息
+message GameEnd
+{
+	repeated JinZhongGangInfo jinzhonggang = 1;		//所有玩家金中杠信息
+	required int32 jzh_times = 2;						//金中杠倍数
+}
+
+message ZhongSum
+{
+	repeated int32 zhong_sum = 1;				//字牌中的金“中”杠数量
+}
+
+ 
+ message NanPingGameSence
+ {
+	required ZhongSum zhong_sum = 1;			//字牌中的金“中”杠数量
+ }
+

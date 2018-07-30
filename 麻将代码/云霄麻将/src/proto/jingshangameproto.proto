@@ -1,0 +1,65 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+package proto.game.jingshanmj;
+
+//癞子牌
+message AckLaiziCard
+{
+	optional int32	card = 1;					//生成癞子的牌，该牌加1就等于癞子牌,该牌减1就等于癞子皮牌
+	optional int32  laizicard = 2;				//癞子牌
+	optional int32	laizipicard = 3;			//癞子皮牌
+}
+
+//开始选择飘
+message AckStartPiao
+{
+	repeated int32 piaoNum = 1;			//能飘的倍数
+}
+
+//选择飘的数
+message ReqChoosePiao
+{
+	optional int32 PiaoNum = 1;			//飘的大小，0表示不飘
+	optional bool IsGouxuan = 2;		//是否勾选，勾选以后下局开始自动飘上局的倍数或分数
+}
+
+//广播玩家选择的飘
+message AckBroadPiao
+{
+	optional int32 chairid = 1;			//椅子id
+	optional int32 UserPiao = 2;		//椅子id对应玩家选择的飘的倍数或分数
+}
+
+//京山麻将场景信息
+message tagJSGameScence
+{
+	optional bool piaoing = 1;			//是否正在飘
+	optional int32 piao_type = 2;		//飘类型 0：飘倍数 1：飘分数
+	optional int32 remain_time = 3;		//剩余飘的时间
+	repeated int32 piao_num = 4;		//飘的倍数或者分数
+	optional int32 laizicard = 5;		//癞子牌
+}
+
+message ReordInfo
+{
+    optional int32 banker_num = 1;       		//坐庄次数
+	optional int32 hu_num = 2;         			//胡牌次数
+	optional int32 piaolaizi_num = 3;        	//飘癞子次数
+	optional int32 outtime_num = 4;         	//超时次数
+	optional int32 totalscore = 5;         		//总分
+	optional int32 WinCounts = 6;				//赢次数
+	optional int32 GangTimes = 7;				//杠次数
+	optional int32 DianGangTimes = 8;			//点杠次数
+	optional int32 Ex1 = 9;						//额外加数据，客户端说只能这么加
+	optional int32 Ex2 = 10;
+}
+
+//总结算统计信息
+message GameEndRecord
+{
+    repeated ReordInfo  UserRecoreInfo = 1;      //统计信息
+	repeated int32  MostDianPaoUser = 2;         //炮手
+	repeated int32  MostWinScoreUser = 3;        //大赢家玩家 
+	optional int32 DataTime = 4;                 //当前时间
+}

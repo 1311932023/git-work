@@ -1,0 +1,30 @@
+package proto.game.yudu;
+
+
+
+
+message YuDuGameEnd
+{
+	repeated int32 hufen = 1 ;  //胡牌分
+	repeated int32 shangbaofen = 2 ; //上宝分
+	repeated int32 genzhuangfen = 3 ; //跟庄分
+	repeated int32 zhigangfen = 4;	//直杠分
+	repeated int32 wangangfen = 5;	//弯杠分
+	repeated int32 angangfen = 6; //暗杠分
+	repeated int32 zhigangjing = 7 ;//直杠精
+	repeated int32 wangangjing = 8 ; //弯杠精
+	repeated int32 angangjing = 9 ; //暗杠精
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

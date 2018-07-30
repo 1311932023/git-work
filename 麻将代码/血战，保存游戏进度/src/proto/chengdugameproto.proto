@@ -1,0 +1,163 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+package proto.game.chengdumj;
+
+import "gameproto.proto";
+
+//广播开始定缺
+message AckUserChangeCardStart
+{
+	optional int32 isTimeOut   = 1;     //0:未超时 1:超时
+	optional int32 remain_time = 2;	    //剩余换牌的时间
+}
+
+//广播换牌是否完成
+message AckChangeCardOk
+{
+	repeated int32 chairID = 1;        	//椅子ID
+	repeated int32 isOk = 2;			// 0 未操作完成 1操作完成
+}
+
+//换牌后下发
+message AckChangeCard
+{
+    optional int32 chairID = 1;     //椅子ID
+	repeated int32 Card = 2; 		//换掉后的的牌，最多三张
+	repeated int32 oldCard = 3;		//选择换的牌
+}
+
+//请求换牌
+message ReqChangeCard
+{
+	optional int32 ischange = 1;	//是否换牌，1表示换，0表示不换
+	repeated int32 Card = 2; 		//换的牌，最多三张
+}
+
+
+//广播开始定缺
+message AckUserLackStart
+{
+	optional int32 isTimeOut   = 1;     //0:未超时 1:超时
+	optional int32 remain_time = 2;	    //剩余定缺的时间
+}
+
+//广播定缺是否完成
+message AckUserLackTypeOk
+{
+	repeated int32 chairID = 1;        	//椅子ID
+	repeated int32 isOk = 2;			// 0 未操作完成 1操作完成
+}
+
+//广播定缺色
+message AckUserLackType
+{
+	repeated int32 LackType = 1; 		//各个玩家选择的定缺色
+}
+
+//选择定缺色
+message ReqChooseLackType
+{
+	required int32 Type = 1; 		//定缺色
+}
+
+
+//成都麻将场景信息
+message tagCDGameScence
+{
+	optional proto.game.AckGameScene GameSence = 1;	 //公共场景信息 
+	optional bool dingqueing                   = 2;	 //是否正在定缺
+	optional int32 dingque_remain_time         = 3;	 //剩余定缺的时间
+	optional bool huanzhanging                 = 4;	 //是否正在换张
+	optional int32 huanzhang_remain_time       = 5;	 //剩余定缺的时间
+	repeated int32 dingqueisok                 = 6;	 //定缺是否完成
+	repeated int32 dingquese                   = 7;	 //定缺色
+	repeated int32 huanzhangisok               = 8;	 //换张是否完成
+	repeated ReqChangeCard huanzhangpai        = 9;	 //换的牌张
+	
+	optional int32 GameType                    = 10; //游戏类型，        0:血战到底     1:血流成河      2:常规打法
+	optional int32 bYiPaoDuoXiang              = 11; //是否可以一炮多响, 1:可以一炮多响 0:不可以一炮多响
+	optional int32 bQiangGangHu                = 12; //是否可以抢杠胡,   1:可以抢杠胡   0:不可以抢杠胡
+	optional int32 bHuanSanZhang               = 13; //是否换三张,       1:换三张       0:不换三张
+	optional int32 bAllDianGangHua             = 14; //点杠花,           0:一家有       1:家家有
+	optional int32 bZiMoJiaFanJiaDi            = 15; //自摸加番，自摸加底0:自摸加番     1:自摸加底
+	optional int32 bHuFanFengDing              = 16; //封顶胡番
+	optional int32 bYaoJiuJiangDui             = 17; //妖九将对
+	optional int32 bMenQingZhongZhang          = 18; //门清中张
+	optional int32 bTianDiHu                   = 19; //天地胡
+	optional int32 bDianPaoKePingHu            = 20; //点炮可平胡
+	optional int32 bYiTiaoLong                 = 21; //一条龙
+	optional int32 bGuaCa                      = 22; //刮擦
+	optional int32 nPlayNum                    = 23; //几人玩法
+	optional int32 nPaiZhangShu                = 24; //牌张数
+	optional int32 nTianHuFan                  = 25; //天胡4番，
+	optional int32 nDiHuFan                    = 26; //地胡3番
+	optional int32 nDuiDuiHuFan                = 27; //对对胡2番
+
+	repeated int32 nHuType                     = 28; //胡牌类型     1自摸， 2炮胡， 3未胡
+	repeated int32 nZiMoHuCard                 = 29; //自摸胡牌张
+	optional int32 bJiaXinWu                   = 30; //夹心5
+	repeated DianPaoInfo stdianpaoinfo         = 31; //点炮信息
+	repeated int32 nDianPaoHuCard              = 32; //点炮胡张
+	optional int32 bHaiDiHuaJiaFan             = 33; //海底花加番
+	optional int32 bHaiDiPaoJiaFan             = 34; //海底炮加番
+	optional int32 bDiFen                      = 35; //底分
+}
+
+message DianPaoInfo
+{
+	optional int32 seatid                      = 1; //点炮椅子ID
+	optional int32 nDianPaoCardShunXu          = 2; //点炮牌位于出牌牌张顺序
+	optional int32 nDianPaoCard                = 3; //点炮牌
+}
+
+//单发游戏结束
+message AckCDGameEnd 
+{
+	optional proto.game.AckGameEnd_Chengdu gameend = 1;	            //公共结算信息
+	repeated int32 husocore                = 2;				//玩家胡牌分数
+	repeated HuPaiInfo hupaiinfo           = 3;				//玩家胡牌信息
+	repeated DaJiaoInfo dajiaoinfo         = 4;             // 大叫信息
+}
+
+message DaJiaoInfo
+{
+	optional int32 seatid                   = 1;                 // 玩家座位ID
+	optional int32 dajiaotype               = 2;                 // 1胡牌玩家，2输分玩家，3赢分玩家
+	optional int32 dajiaofenshu             = 3;                 // 大叫输赢分
+	optional int32 dajiaopai                = 4;                 // 大叫牌张
+	optional int32 dajiaofan                = 5;                 // 大叫番
+	repeated int32 dajiaoleixing            = 6;                 // 大叫牌张类型
+	repeated int32 dajiaoleixingfan         = 7;                 // 大叫牌张类型番数 
+}
+
+message GangFenInfo
+{
+	optional int32 seatid                   = 1;                 // 被杠玩家
+	optional int32 gangfen                  = 2;                 // 输分
+}
+
+message GangInfo
+{
+	optional int32 gangpai                  = 1;                  // 杠牌
+	optional int32 gangtype                 = 2;                  // 杠牌类型
+	optional int32 gangyingfen              = 3;                  // 杠牌类型
+	optional int32 diangangid               = 4;                  // 点杠ID
+	repeated GangFenInfo gangfeninfo        = 5;                  // 大叫输赢分
+}
+
+message HuPaiInfo
+{
+	optional int32 seatid                   = 1;                 // 座位ID，包含点炮人的座位ID
+	optional int32 totalhufan               = 2;                 // 胡的总番数
+	optional int32 hutype                   = 3;                 // 1自摸，2炮胡，3未胡
+	optional int32 hushunxu                 = 4;                 // 胡牌顺序
+	optional int32 hucard                   = 5;                 // 胡的牌
+	optional int32 dianpaoseatid            = 6;                 // 点炮椅子id
+	optional int32 totalgangfen             = 7;                 // 杠牌输赢分
+	optional int32 totalzhuanyufen          = 8;                 // 转与分
+	repeated int32 hufanleixing             = 9;                 // 胡牌类型
+	repeated int32 hufan                    = 10;                // 胡牌类型番数
+	repeated GangInfo ganginfo              = 11;                // 杠信息
+	repeated int32 beihuseatid              = 12;                // 被胡的seatId
+}

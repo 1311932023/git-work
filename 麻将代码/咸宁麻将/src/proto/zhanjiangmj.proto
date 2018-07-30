@@ -1,0 +1,15 @@
+
+package proto.game.zhanjiangmj;
+
+message GuiCardInfo
+{
+	optional int32   GuiPai = 1; //鬼牌
+	optional bool    GameStartGui = 2; //游戏开始发送鬼牌 true 。重连发送false
+
+}
+
+//麻将结算显示内容
+message tagZhanJiangmjGameEnd
+{	
+	repeated int32   ZhanJiangMaPai      	= 1;		//马牌信息
+}

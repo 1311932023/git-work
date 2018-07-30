@@ -1,0 +1,697 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+package proto.game;
+
+
+//固定组合牌
+message FixedCard
+{
+    required int32    CardData = 1;		    //碰杠的牌
+    optional int32    state = 2;			//碰杠类型
+	optional int32    chairID = 3;          //引起操作的椅子ID(主要是为了记录碰、直杠谁的牌)
+}
+
+//手牌
+message HandCards
+{
+	required int32      ChangeableCardsLen = 1;
+    repeated int32      ChangeableCards = 2;
+    optional int32      FixedCardsLen = 3;
+	repeated FixedCard  stFixedCards = 4;
+}
+
+//第一手牌
+message AckFirstHandCard 
+{
+	optional HandCards  usercard = 1;		//玩家的手牌
+	repeated int32    	handcardnums = 2;	//各个玩家手牌张数
+	optional int32		cardnum		= 3;	//剩余牌数
+	optional int32 		current_num = 4;	//局数编号
+	optional int32 		total_num = 5;		//总局数
+	required int32 		banker = 6;			//庄家座位号
+	optional int32 		left_card_count = 7;//牌墩剩余牌数
+}
+
+//录像第一手牌
+message VideoFirstHandCard
+{
+     repeated HandCards  usercard = 1;		//玩家的手牌
+}
+
+//杠信息
+message tagGangInfo
+{
+	required int32 Card = 1;				//要杠的牌
+	optional int32 state = 2;		    	//杠类型
+};
+
+//听牌信息集合
+message tagListenInfo
+{
+	optional int32 OutCard = 1;				//要打出的牌
+	repeated tagHuInfo HuInfo = 2;			//打出牌后的胡牌信息
+};
+
+//听牌信息
+message tagHuInfo
+{
+	required int32 Card = 1;				//听的牌
+	optional int32 LeftNum = 2;				//剩余张数
+	optional int32 HuFanNum = 3;			//胡牌番数
+};
+
+//广播玩家摸牌
+message AckUserGetCard {
+	required int32   chairid  = 1;			//摸牌玩家椅子ID
+	optional int32   leftcardnum   = 2;		//牌池剩余牌数
+	optional int32   card     = 3;			//摸到的牌
+	optional int32   optype	  = 4;			//操作提示
+	repeated tagGangInfo   ganginfo    = 5;	//杠牌信息	
+	optional bool    isgetlast     = 6;		//(二级操作类型)是否从最后摸牌
+} 
+
+//解散房间信息
+message tagDissolveRoomInfo
+{
+	optional int32 state = 1;				//解散状态 0--非解散状态, 1--解散状态
+	optional int32 uid = 2;					//申请结算的uid
+	repeated int32 voters_uid = 3;			//可以投票的uid
+	repeated tagPlayers players = 4;		//已经操作的玩家
+	optional int32 remain_time = 5;			//剩余投票时间
+}
+//每局得分记录
+message tagGain
+{
+	repeated int32 score = 1;				//得分
+}
+//广播 单个玩家信息给桌子所有的玩家
+message AckUpdateUserInfo
+{
+	required int32 chairid = 1; 			//椅子id
+	optional int32 uid = 2;
+	optional int32 money = 3;				//金币
+	optional int32 rmb = 4;					//钻石
+}
+
+//癞子牌
+message AckLaiziCard
+{
+	optional int32  laizicard = 1;				//癞子牌
+	optional int32  mocard = 2;					//摸的牌
+}
+
+//请求刷新玩家gps信息
+message UpdateGPSReq
+{
+	optional double	latitude			= 1;//维度
+	optional double	longitude				= 2; //经度
+	optional string 	city				= 3;//城市
+}//获取玩家玩家定位信息广播
+message UpdateGPSAck
+{
+	repeated tagPlayers	players			= 1; //所有玩家信息  需发 uid name avatar latitude longitude city gps_state
+}
+
+//牌桌玩家信息
+message tagPlayers
+{
+	optional int32 					uid 			= 1;	//uid
+	optional int32 					seatid 			= 2;	//座位号
+	optional int32 					ready 			= 3;	//0表示没有准备，非0表示已经准备
+	optional int32 					money 			= 4;	//money
+	optional string 				name 			= 5;	//name
+	optional int32 					sex 			= 6;	//性别
+	optional string 				avatar 			= 7;	//头像
+	optional int32 					piao 			= 8;	//飘信息
+	optional int32 					offline 		= 9;	//是否离线
+	optional int32 					action 			= 10;	//解散操作类型
+	optional HandCards 				hand_cards 		= 11;	//手牌信息
+	optional int32 					total_score 	= 12;	//得分信息
+	optional int32 					hand_count 		= 13;	//手牌个数
+	optional int32 					hu_count 		= 14;	//胡牌次数
+	optional int32 					dian_pao_count 	= 15;	//点炮次数
+	optional int32 					best_score 		= 16;	//最高得分
+	repeated int32 					listen_cards 	= 17;	//听牌信息
+	optional int32 					operate_type 	= 18;	//玩家选择的操作
+	optional int32 					operate_card 	= 19;	//玩家选择的操作的牌
+	repeated int32 					gains 			= 20;	//每局得分
+	optional int32 					total_gains 	= 21;	//战绩总得分
+	optional int32 					all_piao_score 	= 22;	//飘所得总分
+	optional int32 					zimo_count 		= 23;	//自摸次数
+	optional int32					user_operate  	= 24;	//玩家操作提示
+	optional AckUserOvertimeState   user_overtime   = 25;	//是否超时状态	
+	optional int32 					win_count 		= 26;	//赢次数
+	optional int32 					lose_count	 	= 27;	//输次数
+	
+	//恢复数据增加字段
+	optional int32					dissolve_cnt 	= 110;	//解散次数
+	optional int32					dissovle_state 	= 111;	//解散状态
+	optional string 				tid				= 112;	//tid
+	optional string 				skey 			= 113;	//skey
+	optional int32					getcardcount 	= 114; 	//摸牌次数
+	optional bool 					b_resp 			= 115;	//是否已回应
+	repeated int32 					out_record 		= 116;	//打过的牌
+	optional int32 					out_cnt 		= 117;	//出牌次数	
+	
+	
+	//定位信息
+	optional double					latitude		= 150;	//维度
+	optional double					longitude		= 151; 	//经度
+	optional string 				city			= 152;	//城市
+	optional int32  				gps_state		= 153;	//定位信息 0:未更新 1:已更新
+}
+
+//牌桌信息
+message AckTableInfo
+{
+	//-----------------------------客户端使用-------------------------------------
+	optional int32 					seatid 					= 1;	//玩家的椅子id
+	optional int32 					state 					= 2;	//游戏状态
+	optional int32 					game_player 			= 3;	//游戏人数
+	repeated int32					shai_set 				= 4;	//色子
+	repeated tagPlayers 			players 				= 5;	//桌子上的玩家
+	optional int32 					operate_timer_stamp 	= 6; 	//操作思考时间	
+	optional int32 					left_card_count 		= 7;	//剩余牌数
+	optional bool  					is_out_card 			= 8;	//是否是打牌
+	optional int32 					banker_user 			= 9;	//庄家座位号
+	optional int32 					current_user 			= 10;	//当前玩家
+	optional int32 					current_card 			= 11;	//当前牌
+	optional int32 					current_outcard_user 	= 12;	//当前打牌玩家
+	optional int32 					current_outcard 		= 13;	//当前打的牌
+	optional bool  					is_dispatch 			= 14;	//是否是发牌
+	optional bool  					card_operated 			= 15;	//当前牌是否被操作
+	optional bool  					is_first_card 			= 16;	//是否是第一张牌
+	optional int32 					take_in 				= 17;	//房间携带
+	optional int32 					play_id 				= 18;	//游戏编号
+	optional int32 					room_user_id 			= 19;	//房主uid
+	repeated int32 					piao_count 				= 20;	//可选择的飘的分数
+	optional int32 					user_action 			= 21;	//玩家可操作类型
+	optional bool  					is_first_operate 		= 22;	//是否是第一优先级操作
+	optional bool  					response 				= 23;	//是否已经操作
+	optional HandCards 				hand_cards 				= 24;	//手牌信息
+	repeated int32 					listen_cards 			= 25;	//听牌信息
+	optional tagDissolveRoomInfo 	dissolve_room_info 		= 26;	//解散房间信息
+	optional int32 					current_num 			= 27;	//局数编号
+	optional int32 					all_num 				= 28;	//总局数
+	repeated tagListenInfo  		ListenInfo 				= 29;	//听牌信息					
+	repeated tagGangInfo   			ganginfo    			= 30;	//弯暗杠牌信息
+	repeated int32 					hand_count 				= 31;	//手牌个数
+	repeated tagShowOutCard 		showcard 				= 32;	//四个玩家全部打出的牌
+	repeated tagGroupCard 			groupcard 				= 33;	//四个玩家碰杠牌
+	optional int32 					outcard_time_stamp		= 34;	//出牌时间
+	optional int32					gcrdfrmlstnum			= 35;	//从末尾摸的牌数(杠牌补的牌张数)	
+	optional int32 					left_time 				= 36;	//倒计时时钟剩余秒数
+	optional int32					base_score				= 37;	//底分
+	repeated int32 					roomconfigid 			= 38;	//房间配置ID
+	
+	optional int32 					laizicard 				= 39;	//癞子牌
+
+	//-----------------------------恢复数据使用-------------------------------------
+	optional int32 					stand_money 			= 146;	//下桌分数线
+	optional int32 					base_money 				= 147;	//初始带入
+	optional string 				tid 					= 148;	//tid	
+	optional int32 					room_status 			= 149;	//房间状态
+	optional int32 					b_can_hu 		 		= 150;	//是否可胡
+	optional bool 					is_piao 				= 151;	//是否飘
+	optional string 				video_str 				= 152;	//录像数据
+	optional int32 					cur_timer 				= 153;	//当前定时器
+	optional string 				innings 				= 154;	//唯一标识
+	optional int32 					max_count	 			= 155;	//每人多少张	
+	repeated tagGain 				gains 					= 156;	//战绩信息
+	optional int32 					dissovle_state 			= 157;
+	optional int32 					is_dissolved			= 158;
+	repeated int32					shai_num 				= 159;	//色子
+	optional int32 					last_banker 			= 160;	//下位庄家
+	optional int32					op_user_num				= 161;  //引起操作提示的人数
+	optional int32					done_op_num				= 162;  //已经选择了操作的玩家
+	optional int32  				hu_ope_count			= 163;	//点击胡牌的玩家个数
+	optional int32  				op_hu_num				= 164;	//引起有操作胡牌玩家个数
+	optional int32  				first_operate			= 165;	//优先级最高的玩家是否执行还是放弃，放弃为false
+	repeated int32  				pass_hu_player			= 166;	//多人操作时选过的玩家
+	optional int32  				rob_operate_num			= 167;	//抢杠操作数
+	optional int32  				rob_hu_num				= 168;	//抢杠胡的玩家数
+	optional int32  				wang_gang_player		= 169;	//弯杠玩家
+	optional int32  				wanggangplayeroptype	= 170;	//
+	repeated int32  				rob_hu_done_op			= 171;	//抢杠胡玩家选择的操作
+	repeated bool  					add_fan_flag			= 172;	//另加番，杠上花，杠上炮
+	optional int32  				rob_wangangcard			= 173;	//抢杠胡时弯杠的牌
+	optional bool  					rob_wangang				= 174;	//抢杠胡标志，true为开启
+	optional bool  					rob_hu					= 175;	//胡牌玩家操作标志，true胡牌
+	optional bool  					robgang_huhudge			= 176;  //只有判断是不是抢杠胡的时候使用
+	optional LowLevelOperate 		recordmultiop			= 177;	//记录优先等级低的操作
+	optional CardPool				all_cardpool			= 178;	//记录牌库所有信息
+	optional bool					bGangCalcImme			= 179;	//是否即时杠分	
+	repeated bool					is_hu					= 180;	//是否已经胡，0表示没胡
+	repeated int32					hu_fan_nums				= 181;	//胡牌番数
+	repeated tagGangScoreInfoRecover gang_info				= 182;	//杠牌信息
+	repeated tagUserHuInfo 			huinfo 					= 183;	//各个玩家胡的信息
+	repeated tagFanInfoRecover 		fan_info				= 184;	//胡番信息
+	optional int32 					preready_timer 			= 185;	//下局开始时间
+	
+	optional bool					m_bsupportchi 			= 186;	//是否能吃
+	optional bool					m_bsupportwind 			= 187;	//是否有字牌
+	optional bool					m_bsupportting 			= 188;	//是否支持报听
+	optional bool					m_bzimohu 				= 189;	//是否只能自摸胡	
+	optional bool					m_byipaoduoxiang 		= 190;	//是否一炮多响	
+	optional bool					m_bqiangganghu 			= 191;	//是否抢杠胡	
+	optional bool					m_bqiangzhigang 		= 192;	//抢直杠
+	optional bool					m_bqiangangang 			= 193;	//抢暗杠
+	optional bool					m_bgangshangpao 		= 194;	//是否杠上炮加倍
+	optional bool					m_bhuanggang 			= 195;	//是否荒庄荒杠	
+	optional bool					m_bzhuangxian 			= 196;	//是否庄闲算分
+	optional bool					m_bforcehuqiangganghu 	= 197;	//强制抢杠胡
+	optional bool					m_bfourcehumutilhu 		= 198;	//多人操作强制胡牌
+	optional int32 					m_angangpoint 			= 199;	//暗杠分数
+	optional int32 					m_wangangpoint 			= 200;	//弯杠分数
+	optional int32 					m_zhigangpoint 			= 201;	//直杠分数	
+	optional bool					m_bhu7dui 				= 202;	//
+	optional bool					m_bhu13yao 				= 203;	//
+	optional bool					m_bnosupport_quanqiuren = 204;	//
+	repeated tagOperateRecord		operate_record			= 205;	//玩家操作检测记录
+	repeated tagLouGangInfo			m_lou_gang				= 206;	//漏杠
+	repeated bool					m_lou_hu				= 207;	//漏胡
+	
+	repeated int32					m_chicard				= 208;	//清一色吃牌
+}
+
+message tagFanInfoRecover
+{
+	repeated int32 fan = 1;
+}
+message tagGangScoreRecover
+{
+	optional int32 card = 1;
+	optional int32 chairid = 2;
+	optional int32 type = 3;	
+}
+message tagGangScoreInfoRecover
+{
+	optional int32 total_score = 1;
+	repeated tagGangScoreRecover gang_score = 2;
+}
+message tagLouGangInfo
+{
+	repeated int32 card = 1;
+}
+message tagOperateRecord
+{
+	repeated tagOpInfo opinfo_chi = 1;
+	repeated tagOpInfo opinfo_gang = 2;
+	repeated tagOpInfo opinfo_penggang = 3;	
+}
+message tagOpInfo
+{
+	optional int32 card = 1;
+	optional int32 state = 2;
+}
+
+message LowLevelOperate
+{
+	optional int32 op_type = 1;
+	optional int32 chair_id = 2;
+	optional int32 b_card = 3;
+}
+
+//牌库信息
+message CardPool
+{
+	repeated int32 			all_card 		= 1;
+	optional int32 			seedid	 		= 2;
+	optional int32 			mode			= 3;
+	optional int32			maxcount		= 4;
+	optional int32 			count			= 5;
+	optional int32			current			= 6;
+	optional int32 			last			= 7;
+}
+
+
+message OperPriority
+{
+	optional int32 priority_lv = 1;
+	optional int32 oper_kind = 2;
+	optional bool give_up = 3;
+	optional int32 chair_id = 4;
+}
+
+//开始飘
+message AckStartPiao
+{
+	required int32 state = 1;				//状态
+	optional int32 banker = 2;				//庄家座位号
+}
+//请求打飘
+message ReqPiao
+{
+	required int32 cout = 1;				//飘个数
+}
+//飘失败返回
+message AckPiaoErr
+{
+	required int32 uid = 1;					//uid
+	optional int32 seatid = 2;				//座位号
+	optional int32 code = 3;				//错误码
+}
+//飘成功返回
+message AckPiaoSucc
+{
+	required int32 uid = 1;					//uid
+	optional int32 seatid = 2;				//座位号
+	optional string name = 3;				//name
+	optional int32 sex = 4;					//性别
+	optional string avatar = 5;				//头像
+	optional int32 piao = 6;				//飘的个数
+}
+//游戏开始
+message AckGameStart
+{
+	required int32 ChairID = 1; 			//庄家椅子id
+	optional int32 IsChangBanker = 2;		//是否换庄，0表示没有换庄，非0表示换庄
+	repeated int32 TouZiInfo = 3;			//骰子信息
+}
+
+//操作牌请求
+message ReqOperateCard
+{
+	required int32 operate_type = 1;		//操作类型
+	optional int32 operate_card = 2;		//操作的牌
+}
+
+//广播操作结果
+message AckBcOpResult {
+    required int32    ChairID 	 = 1;		//有操作的椅子id
+    optional int32    OutCardChairID 	 = 2;//出牌的椅子id	
+    optional int32    OpType     = 3;	    //操作类型	
+    optional int32    Card       = 4;		//打出的牌
+	repeated int32    Score		 = 5;		//杠牌引起分数
+	optional int32 IsQiangganghu = 6;		//0表示不是抢杠胡，非0表示抢杠胡
+	optional int32 OpType2 = 7;            	//二级操作类型
+}
+//操作回应
+message AckOperateRes
+{
+	required int32 seatid = 1;				//座位号
+	optional int32 operate_type = 2;		//操作类型
+}
+//广播胡牌
+message AckUserHu
+{
+	required int32   huchairid   	= 1;	//胡牌玩家椅子ID
+	optional int32   pashuchairid	= 2;	//被胡玩家，如果是自摸，则和胡牌玩家椅子id是一样的
+	repeated int32   score      	= 3;	//输赢分
+}
+
+//打牌
+message ReqOutCard
+{
+	required int32 out_card = 1;			//打出的牌	
+}
+
+//广播玩家的超时状态
+message AckUserOvertimeState
+{
+	required int32 chairid = 1;				//椅子id
+	optional int32 state = 2;				//0表示没有超时，1表示出牌超时，2表示操作超时
+}
+
+//打出牌结构体
+message tagShowOutCard
+{
+	required int32 outcardlen = 1;			//已经打出牌的张数
+	repeated int32 outcard = 2;				//打出的牌
+}
+//广播玩家出牌
+message AckUserOutCard 
+{
+    required int32    chairiD 	 = 1;		//出牌玩家椅子ID
+    optional int32    card    = 2;			//打出的牌
+    repeated tagShowOutCard showcard = 3;	//四个玩家全部打出的牌
+}
+
+//出牌后有操作提示
+message AckOpNotify {
+    required int32    ChairID 	 = 1;		//有操作提示的椅子id
+    optional int32    OpType     = 2;		//操作类型	
+    optional int32    Card       = 3;		//打出的牌
+	repeated tagGangInfo Gang	 = 4;	
+}
+
+//碰后的听牌提示
+message AckListenNotify
+{	
+	required int32 OpType  = 1;				//提示类型
+    repeated tagListenInfo ListenInfo  = 2;	//听牌信息
+}
+
+
+//结算显示，杠牌信息
+message tagEndGang
+{
+	optional int32 GangType = 1;			//0表示无，64表示点杠,2表示直杠，4表示弯杠，8表示暗杠 16被直杠 32被弯杠 128被暗杠
+	optional int32 GangCard = 2;			//杠的牌
+	optional int32 GangScore = 3;			//杠的分 有连杠，需要加倍 
+}
+//结算显示杠牌，放炮等信息
+message tagEndGangInfo
+{
+	repeated tagEndGang Gang = 1;			//结算显示的点杠、暗杠等杠牌信息
+	optional int32 TotalGangScore = 2;		//总杠分
+}
+
+//另加番信息
+message AddFanInfo
+{
+    optional int32 AddType = 1;          	//另加分类型
+	optional int32 AddNum = 2;           	//分数
+	optional int32 AddType2 = 3;           	//额外参数 0:软胡 1：硬胡
+}
+//番数信息
+message FanInfo
+{
+	required int32 chairid = 1;				//座位号
+	required int32 SpecialType = 2;			//详细结算胡牌类型 1表示自摸，2表示点炮胡，3表示放炮,4 被自摸 5,抢杠胡 6，被抢杠 7,一炮多响
+	required int32 FanNum = 3;				//番数		
+	repeated AddFanInfo addfan = 4;   	    //另加番信息
+	optional int32 hucard = 5;				//胡的牌	
+}
+
+//游戏结束
+message AckGameEnd 
+{
+	repeated HandCards UserCard = 1;		//玩家手牌
+	repeated int32 Score  = 2;				//四个玩家输赢总分
+	optional int32 cur_game_num = 3;		//当前局数
+	repeated int32 total_score 	= 4;		//累计总分
+	optional int32 EndState = 5;			//结束状态，0表示胡牌结束，1表示流局
+	repeated tagEndGangInfo EndGangInfo = 6;//四个玩家的杠牌信息	
+	repeated FanInfo faninfo = 7;			//番数信息,4个玩家
+	repeated int32 money = 8;				//每个玩家的金币
+	optional int32 room_game_nums 	= 9;	//总局数
+	repeated int32 piao_score 		= 10;	//玩家选择飘的分数  -1:未选择
+}
+
+//游戏开始失败
+message AckGameStartFail
+{
+   optional int32 vid = 1;					//vid
+   optional string roomid = 2;				//房间号
+   optional int32 can_start = 3;			//是否能开始
+   optional int32 code = 4;					//不能开始的错误码
+   optional int32 ts = 5;					//当前时间戳
+}
+
+//准备成功返回
+message AckUserReady
+{
+	required int32 seatid = 1;				//座位号
+	optional int32 uid = 2;					//uid
+}
+
+//申请解散房间失败
+message AckDissolveErr
+{
+	required int32 code = 1;				//申请解散房间失败的错误码
+}
+//申请解散房间成功
+message AckDissolveSucc
+{
+	required int32 uid = 1;					//申请人uid
+	repeated int32 voters_uid = 2;			//投票人uid
+	optional int32 remain_time = 3;			//投票剩余时间
+}
+//操作解散房间请求
+message ReqDissolveAct
+{
+	required int32 uid = 1;					//操作的uid
+	optional int32 action = 2;				//操作类型
+}
+//操作解散房间成功
+message AckDissolveActSucc
+{
+	required int32 uid = 1;					//操作的uid
+	optional int32 action = 2;				//操作类型
+}
+//解散房间结果
+message AckDissolveResult
+{
+	required int32 result = 1;				//解散房间结果
+}
+//离线广播
+message AckOffline
+{
+	required int32 uid = 1;					//uid
+	optional int32 seatid = 2;				//seatid
+}
+//最终结算面板
+message AckFinalEnd
+{
+	required string roomid = 1;				//房间号
+	optional int32 room_user_id = 2;		//房主uid
+	optional int32 ts = 3;					//当前时间戳
+	repeated tagPlayers players = 4;		//最终结算玩家信息
+}
+//手牌详情
+message AckHandDetail
+{
+	repeated tagPlayers players = 1;		//手牌详情	
+}
+
+//上局结算信息返回
+message AckLastEndInfo
+{
+	required string info = 1;				//上局结算信息
+}
+
+
+// 客户端暂时不用处理
+
+//断线重连还原各个玩家胡牌信息 客户端暂时不用处理
+message tagUserHuInfo
+{
+	repeated tagHu hu = 1;
+}
+
+//断线重连 胡的信息
+message tagHu
+{
+	optional int32 HuCard = 1;				//胡的牌
+	optional int32 PasHuChiarid = 2;		//胡谁的牌,如果自摸，则和自己的椅子id一样
+}
+
+//断线重连玩家碰杠牌	
+message tagGroupCard
+{
+	repeated FixedCard FixedCard = 1;		//碰杠牌
+}
+
+//场景协议  客户端暂时不用处理
+message AckGameScene
+{
+	optional int32 changetime = 1; 			//换牌时间，秒为单位
+	optional int32 lacktypetime = 2;		//定缺牌时间
+	optional int32 outcardtime = 3;			//出牌时间
+	optional int32 operatetime = 4;			//操作时间
+	optional int32 basescore = 5;			//基础底分
+	optional int32 delaytime = 6;			//网咯延时
+	optional int32 SceneStatus = 7;			//0表示空闲，1表示换牌，2表示选择定缺色，3表示游戏中场景  10表示桌子已经解散
+	optional int32 LeftTime = 8;			//倒计时时钟剩余秒数
+	optional HandCards UserCard = 9;		//玩家手牌
+	repeated int32 HandCardNums = 10;		//各个玩家手牌张数
+	optional int32 CurOutCardUser = 11;  	//上一次出牌玩家
+	repeated tagShowOutCard ShowCard = 12;	//四个玩家全部打出的牌
+	optional int32 curOutCard = 13;			//当前打出的牌
+	repeated tagUserHuInfo HuInfo = 14;		//各个玩家胡的信息
+	repeated int32 TotalScore = 15;			//各个玩家胡、杠所得的总分							
+	repeated tagGroupCard GroupCard = 16;	//四个玩家碰杠牌
+	optional int32 IsAutoHu = 17;			//是否自动胡牌
+	optional int32 BankerChairid = 18;		//庄家椅子ID
+	repeated int32 UserLackType = 19;		//各个玩家选择的定缺色
+	optional int32 IscurGetCard = 20;		//当前是否摸牌，1表示是当前摸牌，0表示不是
+    optional int32   Card     = 21;			//摸到的牌
+	optional int32   OpType	  = 22;			//操作提示
+    repeated tagGangInfo   GangInfo    = 23;//暗杠牌信息
+    repeated tagListenInfo  ListenInfo = 24;//听牌信息	
+	repeated int32	OfflineState = 25;		//在线状态，0为在线，非0表示断线
+	optional int32 PoolCardLeftNums = 26;	//牌池剩余张数
+	optional int32 preready_timer = 27;		//下局开始时间
+	optional int32   stand_money = 28; 		//下桌分数线
+	optional int32 HorseNum = 29;        	//买马个数
+	optional int32 isDisbandroom = 30;		//当前是否在解散房间，0表示不是，1表示正在解散房间
+	optional int32 roomGolden = 37;			//玩家进入房间的初始金币
+	repeated int32 RoomConfigID = 38;		//房间配置ID
+}
+
+
+/*录像数据*/
+//桌上数据录像
+message TableInfoVideo
+{
+	optional int32 banker = 1;				//庄家座位号
+	optional int32 take_in = 2;				//房间携带
+	optional int32 play_id = 3;				//游戏编号
+	optional int32 room_user_id = 4;		//房主uid
+	repeated tagPlayers players = 5;		//桌子上的玩家
+	optional int32 game_player = 6;			//游戏人数
+	optional string game_name = 7;			//游戏名字
+	optional int32 all_num = 8;				//总局数
+	optional int32 current_num = 9;			//局数编号
+}
+//游戏开始录像
+message GameStartVideo
+{
+	required int32 banker = 1;				//庄家座位号
+	optional int32 banker_card = 2;			//庄家的最后一张牌
+	optional int32 left_card_count = 3;		//牌墩剩余牌数
+	repeated tagPlayers players = 4;		//玩家信息
+	optional int32 current_num = 5;			//局数编号
+}
+//操作提示
+message OperateNotify
+{
+	repeated tagPlayers players = 1;		//操作提示玩家
+}
+
+//战绩返回
+message AckGains
+{
+	repeated tagPlayers players = 1;		//玩家信息
+}
+
+message AckChat
+{
+	required int32 seatid = 1;			//
+	optional string text = 2;			//
+}
+
+message AckFace
+{
+	required int32 seatid = 1;			//
+	optional int32 faceid = 2;			//
+}
+//切换桌面风格
+message AckSwitchStyle
+{
+	required int32 seatid = 1;
+}
+
+//操作失败
+message AckOperErrUc
+{
+	required int32 code = 1;
+}
+//错误码
+enum E_OperErrCode
+{
+	E_PIAO_STATE_ERROR 			= 176;//不在飘阶段
+	E_PIAO_NUM_ERROR 			= 177;//飘数量错误
+	E_PIAO_SEAT_ERROR 			= 178;//飘玩家座位ID错误
+	E_PIAO_REPEAT_ERROR			= 179;//重复飘
+	
+	E_OUTCARD_SEAT_ERROR				= 180;//出牌座位ID错误
+	E_OUTCARD_CARD_NOT_IN_HAND_ERROR 	= 181;//出的牌不在手牌中错误
+	
+	E_OPER_DISSOLVE_STATE_ERROR = 182;//解散房间期间不允许操作
+	E_OPER_SEAT_ERROR 			= 183;//操作座位ID错误
+	E_OPER_CODE_ERROR 			= 184;//操作码错误
+	E_OPER_CARD_ERROR 			= 185;//操作牌错误
+	E_OPER_REPEAT_ERROR 		= 186;//操作重复错误
+}

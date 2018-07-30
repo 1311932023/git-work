@@ -1,0 +1,26 @@
+package proto.game.pinghumj;
+
+message phgamescene
+{
+	optional int32 roomType = 1;           //房间类型
+}
+message Horse
+{  
+    optional int32 chairID  = 1;         //玩家椅子ID
+    optional int32 HorseNum = 2;         //买马个数
+	repeated int32 HorseCard = 3;        //买马牌数据
+	optional int32 HorseType = 4;        //马类型(0奖马 1中马)
+}
+message UserHorseCard
+{
+    optional int32 chairID = 1;       //玩家ID
+	optional int32 Num = 2;           //该玩家中马数量
+	repeated int32 HorseCard = 3;     //玩家中马牌数据
+	optional int32 bValid = 4;        //是否有效(0有效 1无效)
+}
+//碰杠胡麻将结算信息
+message phmjGameEndInfo
+{   
+	repeated Horse   HorseInfo = 1;             //买马牌数据信息 
+	repeated UserHorseCard   UserHorse = 2;     //各玩家中马信息
+}

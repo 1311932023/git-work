@@ -1,0 +1,72 @@
+package proto.game.sxmahjonggame;
+//海南麻将场景信息
+message sxgamescene
+{  
+    optional int32 roomType = 1;           //(暂时无用)
+	optional int32 isHavePiao = 2;          //是否有飘
+	optional int32 piaoTime = 3;			//选择飘的时间
+	repeated int32 UserPiao = 4;			//各个玩家选择的飘
+	optional int32 IsPiaoyet = 5;			//是否已经选择飘
+	repeated int32 piaoNum = 6;			    //飘的倍数
+}
+//选择飘的数
+message ReqChoosePiao
+{
+	optional int32 PiaoNum = 1;			//飘的大小，0表示不飘
+}
+//游戏开始
+message AckGameStart
+{
+	required int32 bankerid = 1; 		//庄家椅子id
+	optional int32 quanfeng  = 2;        //当前圈风
+}
+//开始选择飘
+message AckStartPiao
+{
+	repeated int32 piaoNum = 1;			//飘的倍数
+}
+
+//广播玩家选择的飘
+message AckBroadPiao
+{
+	optional int32 chariid = 1;			//椅子id
+	optional int32 UserPiao = 2;		//椅子id对应玩家选择的飘的倍数
+}
+
+//番数信息
+message FanInfo
+{   
+    optional int32 chairID = 1;            //椅子ID  
+	optional int32 EndType = 2;            //0表示无，1表示自摸，2表示点炮胡，3表示放炮,4 被自摸
+	optional int32 SpecialType = 3;        //详细结算胡牌类型 1表示自摸，2表示点炮胡，3表示放炮,4 被自摸 
+    optional int32 FanType = 4;            //番型
+	optional int32 FanNum = 5;             //番数 
+}
+//陕西麻将结算信息
+message sxmjGameEndInfo
+{   
+	repeated FanInfo    faninfo = 1;       //番数信息
+	repeated int32      HuScore  = 2;      //个玩家胡牌输赢分数（不是总分数 ）
+	repeated int32      piaoNum = 3;				//各个玩家选择的飘
+}
+
+//统计信息
+message ReordInfo
+{
+    optional int32 minggang_num = 1;       //明杠次数
+	optional int32 angang_num = 2;         //暗杠次数
+	optional int32 dianpao_num = 3;        //点炮次数
+	optional int32 jiepao_num = 4;         //接炮次数
+	optional int32 zimo_num = 5;           //自摸次数
+	optional int32 totalscore = 6;         //总分
+}
+//总结算统计信息
+message GameEndRecord
+{
+    repeated ReordInfo  UserRecoreInfo = 1;      //统计信息
+	repeated int32  MostDianPaoUser = 2;              //炮手
+	repeated int32  MostWinScoreUser = 3;             //大赢家玩家 
+	optional int32 DataTime = 4;                    //当前时间
+}
+
+

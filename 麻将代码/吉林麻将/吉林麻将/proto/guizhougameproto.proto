@@ -1,0 +1,170 @@
+package proto.game.guizhou;
+//import "gameproto.proto";
+
+enum TianTingState
+{
+	BAO_0 = 0;			//不能报听
+	RUAN_BAO_TING = 1;	//能报听,软报
+	YING_BAO_TING = 2;	//能报听，硬报	
+	RUAN_BAO_SUCC = 3;	//软听
+	YING_BAO_SUCC = 4;	//硬听
+	RUAN_BAO_CANCEL = 5;
+	YING_BAO_CANCEL = 6;
+}
+enum JiType
+{
+	JI_0 = 0;
+	CHONG_FENG_JI = 1;
+	ZE_REN_JI= 2;
+	CHONG_FENG_WU_GU_JI = 3;
+	ZE_REN_WU_GU_JI =4;
+	JIN_CHONG_FENG_JI = 5;
+	JIN_ZE_REN_JI= 6;
+	JIN_CHONG_FENG_WU_GU_JI = 7;
+	JIN_ZE_REN_WU_GU_JI = 8;
+	XIN_QI_JI = 9;
+	FAN_PAI_JI = 10;
+	JI_DIAN_PAO = 11;
+	JI_ZI_MO = 12;
+	JI_LIAN_ZHUANG = 13;
+	JI_ZHI_GANG = 14;
+	JI_WANG_GANG = 15;
+	JI_AN_GANG = 16;
+	JI_HAN_BAO_DOU = 17;
+	JI_QIANG_GANG_HU = 18;
+	JI_GANG_HOU_PAO = 19;
+	JI_SHAO_JI = 20;
+	JI_RUAN_BAO = 21;
+	JI_YING_BAO = 22;
+	JI_SHA_BAO = 23;
+	JT_YAO_JI = 24;
+	JT_WU_GU_JI = 25;
+	JT_JIN_YAO_JI = 26;
+	JT_JIN_WU_GU_JI = 27;
+	JI_GANG_SHANG_HUA = 28;
+	JT_YAO_BAI_JI = 29;
+	JT_BEN_JI = 30;
+	JT_ZE_REN_GANG_BAO_DOU = 31;
+	JT_ZE_REN_WU_GU_GANG_BAO_DOU = 32;
+	JIN_FAN_PAI_JI = 33;
+	JIN_YAO_BAI_JI = 34;
+	JIN_BEN_JI = 35;
+	JIN_XIN_QI_JI = 36;
+	FAN_BIAN_ZHANG = 37;
+	FAN_KA_ZHANG = 38;
+	FAN_DA_KUAN_ZHANG = 39;
+	FAN_YUAN_QUE = 40;
+	FAN_WEI_QUE_YI_MEN = 41;
+	FAN_HAI_DI_LAO_YUE = 42;
+	FAN_HAI_DI_PAO = 43;
+	FAN_TIAN_HU = 44;
+	FAN_DI_HU = 45;
+	FAN_DAN_DIAO_JIANG = 46;
+}
+message tagHuInfo
+{
+	required int32 Card = 1;			//听的牌
+	optional int32 LeftNum = 2;			//剩余张数
+	optional int32 HuFanNum = 3;		//胡牌番数
+};
+
+message tagListenInfo
+{
+	required int32 OutCard = 1;			//要打出的牌
+	repeated tagHuInfo HuInfo = 2;		//打出牌后的胡牌信息
+};
+
+message AckJiPaiOp
+{
+	required int32 ChairID = 1;
+	required JiType JiState= 2;	
+}
+message tagJiInfo
+{
+	required int32 Card = 1;
+	required int32 ChairID = 2;
+	optional JiType JiState = 3;
+	optional int32 Score = 4;	
+}
+message tagSimpleJiInfo
+{
+	repeated int32 Card = 1;
+}
+//四个人拥有的鸡牌
+message tagAllJiPais
+{
+	repeated int32  JiPais = 1;				//所有鸡牌
+	repeated bool	IsJinJi = 2;			//是否是金鸡
+}
+
+message JiEndInfo
+{
+	repeated tagJiInfo JiInfo = 1;
+}
+
+//贵州麻将结算
+message tagGuiZhouEndInfo
+{
+	repeated int32	JiNums = 1;				//鸡牌张数	没用
+	repeated int32  JiScores = 2;			//获得鸡分 没用
+	optional bool	IsCheckDaJiao = 3;		//是否查叫 没用
+	repeated int32	HuFanType = 4;			//胡番类型 没用
+	repeated int32	HuFanNums = 5;			//胡番数 没用
+	repeated tagAllJiPais  AllJiPais = 6;	//所有鸡牌 没用
+	optional int32  ChongFengJiID = 7;		//冲锋鸡座位号 没用
+	optional int32  ZeRenJiID = 8;			//责任鸡座位号 没用
+	optional bool	IsBaoJi = 9;			//是否包鸡 没用
+	repeated bool IsJiaoPai = 10;			//是否报听
+	optional int32 FanJipai = 11;			//翻鸡牌
+	repeated tagSimpleJiInfo ShowJi = 12;	//亮鸡牌
+	repeated JiEndInfo JiInfo = 13;			//四玩家鸡分
+	optional int32 IsShowJiPai = 14;		//是否是翻鸡牌 结算前是否要展示鸡牌
+}
+
+//广播报听成功
+message AckBaoTingSucc
+{
+	required int32 ChairID = 1;			//报听的座位号
+	optional TianTingState TingState = 2;		//天听状态， 0 无听
+	repeated tagListenInfo ListenInfo = 3;
+}
+message tagBaoTing
+{
+	required int32 ChairID = 1;
+	optional TianTingState TingState = 2;
+}
+message tagLockCard
+{
+	required int32 ChairID = 1;
+	required bool Locked = 2;
+}
+//贵州桌面信息
+message tagGuiZhouTableInfo
+{
+	optional bool IsManTangJi = 1; //是否满堂鸡
+	repeated bool IsBaoTing = 2;  //四个玩家报听情况 天听 软报 硬报
+	repeated AckJiPaiOp PlayerJi = 3;
+	optional bool LockCard = 4;
+	optional AckBaoTingSucc TingOp = 5;
+}
+
+//贵州麻将杠牌信息
+message tagGuiZhouGang
+{
+	optional bool IsHanBaoDou = 1; //是否憨包豆
+}
+
+//贵州麻将出牌信息
+message tagGuiZhouOutCard
+{
+	optional bool IsChongFengJi = 1;	//是否为冲锋鸡
+	
+}
+
+//贵州麻将操作结果
+message tagGuiZhouOpResult
+{
+	optional bool IsZeRenJi = 1;	//是否为责任鸡
+	optional int32 ZeRenJiType = 2;	//责任鸡类型
+}
+

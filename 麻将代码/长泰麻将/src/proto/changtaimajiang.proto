@@ -1,0 +1,49 @@
+
+package proto.game.changtaimajiang;
+
+// 牌局赖子信息
+message RspGameLaiziInfo
+{
+	repeated int32 laiziShowList = 1;	// 亮牌赖子
+	repeated int32 laiziSignList = 2;	// 角标赖子
+	repeated int32 diceList = 3;		// 骰子列表
+	optional bool flag = 4;   			// true:游戏开始首次发送标记；
+	repeated int32 laiziReplaceList = 5;	// “赖子替”，用于替代“赖子牌”的牌
+
+}
+
+//#### 花牌模块（cmd:44007）【触发、重连】 #####
+//一、proto数据结构体：
+// 牌局花牌信息
+message RspGameHuapaiInfo
+{
+	repeated int32 huapaiList = 1;	// 花牌
+}
+
+//#### 花牌模块（cmd:44008）【触发、重连】 #####
+// 牌局花牌信息
+message RspGameHuapaiInitCardInfo
+{
+	optional int32 seatid = 1;
+	repeated int32 cards = 2 ; // 花牌
+}
+
+
+// 玩家分数信息
+message GameEndPlayerScoresInfo 
+{
+	optional int32    seatid 	    = 1;		//椅子ID
+	optional int32    gangscore  	= 2;        //杠总分
+	optional int32    huscore       = 3;        //胡牌分
+	optional int32    dianscroe     = 4;        //牌点分
+	optional int32    fanscore     	= 5;        //番数分
+	optional int32    zengscore     = 6;        //增分数
+	optional int32    gangshangpaoscore     = 7;//杠上炮分数
+	optional int32    extra_dianscore    = 8;   //额外点分
+	optional int32    total_dianscore    = 9;   //总点分
+} 
+
+message RspGenZhuang
+{
+	optional bool gengzhaungflag = 1; //true ,代表跟庄
+}

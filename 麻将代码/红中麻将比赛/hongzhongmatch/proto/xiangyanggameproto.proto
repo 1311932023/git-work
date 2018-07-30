@@ -1,0 +1,108 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+package proto.game.xiangyangmj;
+
+//固定组合牌
+message FixedCard
+{
+    required int32    CardData = 1;		    //碰杠的牌
+    optional int32    state = 2;			//碰杠类型
+	optional int32    chairID = 3;          //引起操作的椅子ID(主要是为了记录碰、直杠谁的牌)
+}
+
+//手牌
+message HandCards
+{
+	required int32      ChangeableCardsLen = 1;
+    repeated int32      ChangeableCards = 2;
+    optional int32      FixedCardsLen = 3;
+	repeated FixedCard  stFixedCards = 4;
+}
+
+message tagHuInfo
+{
+	required int32 Card = 1;			//听的牌
+	optional int32 LeftNum = 2;			//剩余张数
+	optional int32 HuFanNum = 3;		//胡牌番数
+};
+
+message tagListenInfo
+{
+	required int32 OutCard = 1;			//要打出的牌
+	repeated tagHuInfo HuInfo = 2;		//打出牌后的胡牌信息
+};
+
+message tagPreGangs
+{
+	required int32 OutCard = 1;			//要打出的牌
+	repeated int32 GangInfo = 2;		//打出牌后的杠
+};
+
+message tagShowCards
+{
+	optional bool show_card = 1;		//是否亮牌
+	optional HandCards UserCard = 2;	//玩家手牌
+	optional int32 seatid = 3;			//座位号
+	optional bool show_card_op = 4;		//是否已经摊牌
+	repeated tagListenInfo  ListenInfo = 5;	//听牌信息
+	repeated tagPreGangs xy_pregang = 6;		//襄阳预杠信息
+}
+
+message tagPiaoScore
+{
+	optional int32 seatid = 1;				//座位号
+	optional int32 piao_score = 2;			//飘分
+	optional bool already_piao = 3;			//是否已经飘
+}
+
+message tagPiaoInfo
+{
+	optional bool is_piao = 1;				//是否是飘阶段
+	repeated int32 can_piao_scores = 2;		//可飘分数
+	repeated tagPiaoScore piao_scores = 3;	//玩家飘分数
+}
+
+//游戏场景
+message tagGameScene
+{
+	repeated tagShowCards ShowCards = 1;	//亮牌信息
+	optional tagPiaoInfo piao_info = 2;		//飘信息
+	optional int32 room_user_id = 3;		//房主id
+}
+
+//游戏场景
+message tagEndInfo
+{
+	optional int32 seatid = 1;				//座位号
+	optional int32 piao_score = 2;			//飘分
+	optional int32 piao_totalscore = 3;		//飘总得分
+	optional int32 hu_score = 4;			//胡牌分
+	optional bool show_card = 5;			//亮牌
+}
+
+//游戏场景
+message tagXYGameEnd
+{
+	repeated tagEndInfo endinfo = 1;		//结算信息
+	optional bool is_piao = 2;				//飘是否开启
+}
+
+//选择飘的数
+message ReqChoosePiao
+{
+	optional int32 PiaoNum = 1;			//飘的大小，0表示不飘
+	optional int32 IsGouxuan = 2;		//
+}
+//开始选择飘
+message AckStartPiao
+{
+	repeated int32 piaoNum = 1;			//飘的倍数
+}
+
+//广播玩家选择的飘
+message AckBroadPiao
+{
+	optional int32 chariid = 1;			//椅子id
+	optional int32 UserPiao = 2;		//椅子id对应玩家选择的飘的倍数
+}

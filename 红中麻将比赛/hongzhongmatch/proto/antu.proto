@@ -1,0 +1,18 @@
+package proto.game.antu;
+
+message AnTuGameEnd
+{
+	required int32 huafen = 1;				//花分
+	repeated int32 huacard = 2;				//花牌数组
+	repeated int32 piaofen = 3;				//3个人飘分  
+}
+
+
+
+
+
+
+
+
+
+

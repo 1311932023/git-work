@@ -1,0 +1,21 @@
+package proto.game.dongxiang;
+
+message DongXiangGameEnd
+{
+	repeated int32 hufen = 1;			//胡牌分
+	repeated int32 genzhuangfen = 2;	//杠分    
+	repeated int32 shaozhuangfen = 3;	//鸟分
+	repeated int32 mapaifen = 4;   		//马牌分  
+	repeated int32 jingfen = 5;			//精牌分
+	repeated int32 gangfen = 6;			//杠分  包含直杠、弯杠、暗杠、天杠、精直杠、精弯杠、精暗杠
+}
+
+
+
+
+
+
+
+
+
+

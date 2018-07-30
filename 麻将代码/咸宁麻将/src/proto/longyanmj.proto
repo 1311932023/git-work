@@ -1,0 +1,42 @@
+
+
+
+package proto.game.longyanmj;
+
+//游戏结算
+message LongYanGameend
+{
+	repeated int32 huagang = 1 ;	//花杠分
+	repeated int32 gangfen = 2 ;	//杠分
+	repeated int32 fenbing = 3 ;	//分饼分数
+	repeated int32 hua_sum = 4 ;	//花牌数量
+}
+
+//客户端发送服务器游金按钮消息
+message AckYouJin
+{
+	required int32 charid = 1;			//椅子id
+	//required int32 youjin_status = 2;	//游金状态   1:游金  3：双游  4：三游
+}
+
+message AckLockCard
+{
+	repeated int32 card = 1;		//牌堆里面不需要锁住的牌
+}
+
+message GamsSence
+{
+	//
+	required AckLockCard  lock_card = 1;     //锁牌
+
+}
+
+
+//游金动画
+message YouJinAnimation
+{
+	required int32 charid = 1;		//游金玩家
+	required int32 youjin_status = 2;	//游金状态   1:游金  3：双游  4：三游
+}
+
+

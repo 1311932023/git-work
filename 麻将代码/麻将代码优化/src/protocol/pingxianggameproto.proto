@@ -1,0 +1,21 @@
+
+//package com.ihuizhi.network.mahjong.protobuf;
+
+package proto.game.pingxiangmj;
+import "gameproto.proto";
+
+//抓鸟信息
+message tagJiangma
+{
+	optional int32 CardType 		= 1;		//抓鸟类型	0:抓n张  1:一马全中
+	repeated int32 Card 			= 2;       	//抓鸟牌
+	optional int32 Num 				= 3;		//中鸟数量
+	repeated int32 ZhongChairID 	= 4;      	//可表示中鸟牌：下标与抓鸟牌一一对应，0xFF表示没中，抓鸟玩家chairid表示中了
+	optional int32 Chairid 		 	= 5;		//抓鸟玩家座位
+}
+
+message AckGameEndPingXiang
+{
+	optional proto.game.AckGameEnd 	gameend 		= 1;	//公共结算信息
+	repeated tagJiangma  			zhuaniao_info 	= 2;	//抓鸟信息		
+}
